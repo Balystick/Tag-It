@@ -8,20 +8,6 @@
 import SwiftUI
 import MapKit
 
-struct Artwork: Identifiable, Codable {
-    let id: UUID
-    let title: String
-    let image: String
-    let type: String
-    let address: String
-    let city: String
-    let country: String
-    let latitude: Double
-    let longitude: Double
-    let points: String
-    let id_artist: UUID
-}
-
 class ArtworkFetcher: ObservableObject {
     @Published var artworks: [Artwork] = []
 
