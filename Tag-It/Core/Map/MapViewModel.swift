@@ -9,7 +9,7 @@ import Foundation
 
 
 class MapViewModel: ObservableObject {
-    @Published var artworks: [ArtWork] = []
+    @Published var artworks: [Artwork] = []
     
     private let baseURL = "http://localhost:3000/artworks"
     
@@ -22,7 +22,7 @@ class MapViewModel: ObservableObject {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
                 do {
-                    let decodedArtWorks = try JSONDecoder().decode([ArtWork].self, from: data)
+                    let decodedArtWorks = try JSONDecoder().decode([Artwork].self, from: data)
                     DispatchQueue.main.async {
                         self.artworks = decodedArtWorks
                     }
