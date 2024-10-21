@@ -85,7 +85,6 @@ struct ArtworkDetailView: View {
     }
 }
 
-
 struct MapView: View {
     @StateObject var fetcher = ArtworkFetcher()
     @State private var region = MKCoordinateRegion(
