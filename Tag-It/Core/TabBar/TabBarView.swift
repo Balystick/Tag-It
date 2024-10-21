@@ -27,7 +27,7 @@ struct TabBarView: View {
                 }
                 .tag(Tab.home)
             
-            Text("Map")
+            MapView()
                 .tabItem {
                     Image(systemName: Tab.map.rawValue)
                     Text("Map")
