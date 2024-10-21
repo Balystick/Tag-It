@@ -15,6 +15,8 @@ struct Artwork: Codable, Identifiable {
     let address: String
     let city: String
     let country: String
+    let date: String
     let latitude: Double
     let longitude: Double
 }
+
