@@ -1,15 +1,14 @@
 //
-//  HomeView.swift
+//  FavoriteViewModel.swift
 //  Tag-It
 //
-//  Created by Audrey on 21/10/2024.
+//  Created by Audrey on 22/10/2024.
 //
-
 import SwiftUI
 
-struct HomeView: View {
+struct FavoriteView: View {
     
-    @StateObject private var viewModel = HomeViewModel()
+    @StateObject private var viewModel = FavoriteViewModel()
     
     let columns = [
         GridItem(.adaptive(minimum: 100))
@@ -22,9 +21,9 @@ struct HomeView: View {
         VStack {
             ScrollView {
                 LazyVGrid(columns: columns , spacing: 20) {
-                    ForEach(viewModel.artworks) { artwork in
+                    ForEach(viewModel.favorites) { favorite in
                         ZStack {
-                            AsyncImage(url: URL(string: "http://localhost:8080/images/\(artwork.image)")) { image in
+                            AsyncImage(url: URL(string: "http://localhost:8080/favorites/\(favorites.image)")) { favorite in
                                 image
                                     .resizable()
                                     .scaledToFit()
@@ -48,12 +47,12 @@ struct HomeView: View {
             }
         }
         .onAppear {
-            viewModel.fetchArtWorks()
+            viewModel.fetchFavorites()
         }
         .padding()
     }
 }
 
 #Preview {
-    HomeView()
+    FavoriteView()
 }
