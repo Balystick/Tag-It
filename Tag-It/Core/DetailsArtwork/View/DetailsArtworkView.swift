@@ -16,11 +16,15 @@ struct DetailsArtworkView: View {
         ScrollView {
             VStack {
                 AsyncImage(url: URL(string: "\(baseURL)\(artwork.image)")) { image in
-                    image
-                        .frame(maxWidth: .infinity, maxHeight: 250)
-                        .scaledToFill()
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .clipped()
+                    NavigationLink {
+                        ArtworkView(artwork: artwork)
+                    } label: {
+                        image
+                            .frame(maxWidth: .infinity, maxHeight: 250)
+                            .scaledToFill()
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .clipped()
+                    }
                 } placeholder: {
                     Image(systemName: "photo.artframe")
                         .font(.system(size: 64))
@@ -80,6 +84,7 @@ struct DetailsArtworkView: View {
                 }
             }
             .background(.ultraThinMaterial)
+            .navigationTitle("Details")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
