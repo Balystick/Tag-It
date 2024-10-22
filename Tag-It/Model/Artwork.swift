@@ -21,3 +21,4 @@ struct Artwork: Codable, Identifiable {
     var points: String
     var id_artist: UUID?
 }
+

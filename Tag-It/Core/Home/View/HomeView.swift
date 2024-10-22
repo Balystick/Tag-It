@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject private var viewModel = MapViewModel()
+    @StateObject private var viewModel = HomeViewModel()
     
     let columns = [
         GridItem(.adaptive(minimum: 100))
@@ -22,15 +22,19 @@ struct HomeView: View {
         VStack {
             ScrollView {
                 LazyVGrid(columns: columns , spacing: 20) {
-                    List(viewModel.artworks) { artwork in
+                    ForEach(viewModel.artworks) { artwork in
                         ZStack {
-                            AsyncImage(url: URL(string: artwork.image)) { image in
+                            AsyncImage(url: URL(string: "http://localhost:8080/images/\(artwork.image)")) { image in
                                 image
                                     .resizable()
                                     .scaledToFit()
                             } placeholder: {
-                                ProgressView("Loading")
+                                ProgressView()
                             }
+                            
+                            
+                            
+                            
                             Button(action: {
                                 
                             }) {
@@ -42,9 +46,10 @@ struct HomeView: View {
                 }
                 .cornerRadius(20)
             }
-        }.onAppear(
-            perform: viewModel.fetchArtWorks
-        )
+        }
+        .onAppear {
+            viewModel.fetchArtWorks()
+        }
         .padding()
     }
 }
