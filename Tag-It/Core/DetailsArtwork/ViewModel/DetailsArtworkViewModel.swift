@@ -12,7 +12,7 @@ class DetailsArtworkViewModel: ObservableObject {
     
     private let baseURL: String = "http://localhost:8080/artworks"
     
-    func fetchArtworkByID(artworkID: String) {
+    func fetchArtworkByID(artworkID: UUID) {
         guard let url = URL(string: "\(baseURL)/\(artworkID)") else {
             print("Invalid URL")
             return

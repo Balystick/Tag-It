@@ -9,25 +9,26 @@ import SwiftUI
 import MapKit
 
 struct DetailsArtworkView: View {
-    @StateObject var viewModel = DetailsArtworkViewModel()
-    let artworkID: String
+    let artwork: Artwork
+    private let baseURL = "http://localhost:8080/thumbs/thumb_"
 
     var body: some View {
         ScrollView {
             VStack {
-                AsyncImage(url: URL(string: "")) { image in
+                AsyncImage(url: URL(string: "\(baseURL)\(artwork.image)")) { image in
                     image
-                        .frame(maxWidth: .infinity, minHeight: 250)
+                        .frame(maxWidth: .infinity, maxHeight: 250)
+                        .scaledToFill()
                         .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .padding(16)
+                        .clipped()
                 } placeholder: {
                     Image(systemName: "photo.artframe")
                         .font(.system(size: 64))
                         .frame(maxWidth: .infinity, minHeight: 250)
                         .background(Color(.systemGray4))
                         .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .padding(16)
                 }
+                .padding(16)
                 
                 HStack {
                     Text("Unknown Author")
@@ -42,21 +43,19 @@ struct DetailsArtworkView: View {
                 .padding(.bottom, 16)
                 
                 VStack(spacing: 0) {
-                    RowDetailsArtworkView(title: "Title", value: "")
+                    RowDetailsArtworkView(title: "Title", value: artwork.title)
                     Divider()
-                    RowDetailsArtworkView(title: "Type", value: "Type")
+                    RowDetailsArtworkView(title: "Type", value: artwork.type)
                     Divider()
-                    RowDetailsArtworkView(title: "Address", value: "Address")
+                    RowDetailsArtworkView(title: "Address", value: artwork.address)
                     Divider()
-                    RowDetailsArtworkView(title: "Postal Code", value: "Postal Code")
+                    RowDetailsArtworkView(title: "City", value: artwork.city)
                     Divider()
-                    RowDetailsArtworkView(title: "City", value: "City")
+                    RowDetailsArtworkView(title: "Country", value: artwork.country)
                     Divider()
-                    RowDetailsArtworkView(title: "Country", value: "Country")
+                    RowDetailsArtworkView(title: "Latitude", value: String(artwork.latitude))
                     Divider()
-                    RowDetailsArtworkView(title: "Latitude", value: "Latitude")
-                    Divider()
-                    RowDetailsArtworkView(title: "Longitude", value: "Longitude")
+                    RowDetailsArtworkView(title: "Longitude", value: String(artwork.longitude))
                 }
                 .background(Color.white)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -68,7 +67,7 @@ struct DetailsArtworkView: View {
                     .padding()
                 
                 Button {
-                    
+                    //
                 } label: {
                     Text("Add Favorite")
                         .padding()
@@ -82,9 +81,6 @@ struct DetailsArtworkView: View {
             }
             .background(.ultraThinMaterial)
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                viewModel.fetchArtworkByID(artworkID: artworkID)
-            }
         }
     }
 }
@@ -110,5 +106,5 @@ struct RowDetailsArtworkView: View {
 }
 
 #Preview {
-    DetailsArtworkView(artworkID: "18A469E1-1606-43B5-B983-395242023738")
+    DetailsArtworkView(artwork: Artwork(title: "Back to the Future", image: "", type: "Grafiti", address: "14 Road", city: "London", country: "England", date: "2022-05-12", latitude: 0.0, longitude: 0.0, points: ""))
 }
