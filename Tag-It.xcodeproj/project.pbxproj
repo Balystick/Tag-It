@@ -15,7 +15,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				View/ContentView.swift,
 			);
 			target = E11283972CB6698C004C8793 /* Tag-It */;
 		};

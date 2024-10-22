@@ -1,3 +1,11 @@
+//
+//  ProfileView.swift
+//  Tag-It
+//
+//  Created by Apprenant 122 on 10/22/24.
+//
+
+
 import SwiftUI
 import Combine // Import Combine for using Publishers
 
@@ -17,6 +25,14 @@ struct ProfileView: View {
             // Progress Bar
             ProgressBar(progress: progress)
 
+            Spacer()
+            HStack(spacing: 20) {
+                                ForEach(0..<3) { _ in
+                                    Circle()
+                                        .fill(Color.white.opacity(0.15))
+                                        .frame(width: 80, height: 80)
+                                }
+                            }.padding()
             Spacer()
 
             // Quests and Timer
@@ -74,7 +90,7 @@ struct ProfileHeader: View {
             }
 
             Spacer()
-
+            Spacer()
             // Badge
             Text("TOP 1%")
                 .font(.system(size: 12, weight: .bold))

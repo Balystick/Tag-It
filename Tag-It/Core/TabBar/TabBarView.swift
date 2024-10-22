@@ -16,7 +16,7 @@ enum Tab: String {
 }
 
 struct TabBarView: View {
-    @State private var selectedTab: Tab = .home
+    @State private var selectedTab: Tab = .map
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -48,7 +48,7 @@ struct TabBarView: View {
                 }
                 .tag(Tab.profile)
             
-            Text("Profile")
+            ProfileView()
                 .tabItem {
                     Image(systemName: Tab.profile.rawValue)
                     Text("Profile")
