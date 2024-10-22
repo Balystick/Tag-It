@@ -15,12 +15,19 @@ struct DetailsArtworkView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Image(systemName: "photo.artframe")
-                    .font(.system(size: 64))
-                    .frame(maxWidth: .infinity, minHeight: 250)
-                    .background(Color(.systemGray4))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .padding(16)
+                AsyncImage(url: URL(string: "")) { image in
+                    image
+                        .frame(maxWidth: .infinity, minHeight: 250)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .padding(16)
+                } placeholder: {
+                    Image(systemName: "photo.artframe")
+                        .font(.system(size: 64))
+                        .frame(maxWidth: .infinity, minHeight: 250)
+                        .background(Color(.systemGray4))
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .padding(16)
+                }
                 
                 HStack {
                     Text("Unknown Author")
@@ -35,7 +42,7 @@ struct DetailsArtworkView: View {
                 .padding(.bottom, 16)
                 
                 VStack(spacing: 0) {
-                    RowDetailsArtworkView(title: "Title", value: "Title")
+                    RowDetailsArtworkView(title: "Title", value: "")
                     Divider()
                     RowDetailsArtworkView(title: "Type", value: "Type")
                     Divider()
@@ -56,9 +63,9 @@ struct DetailsArtworkView: View {
                 .padding(.horizontal, 16)
                 
                 Map()
-                .frame(maxWidth: .infinity, minHeight: 250)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .padding()
+                    .frame(maxWidth: .infinity, minHeight: 250)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .padding()
                 
                 Button {
                     
@@ -73,9 +80,12 @@ struct DetailsArtworkView: View {
                         .padding(.horizontal, 16)
                 }
             }
+            .background(.ultraThinMaterial)
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                viewModel.fetchArtworkByID(artworkID: artworkID)
+            }
         }
-        .background(.ultraThinMaterial)
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -100,5 +110,5 @@ struct RowDetailsArtworkView: View {
 }
 
 #Preview {
-    DetailsArtworkView(artworkID: "")
+    DetailsArtworkView(artworkID: "18A469E1-1606-43B5-B983-395242023738")
 }
