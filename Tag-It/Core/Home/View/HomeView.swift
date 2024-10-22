@@ -31,14 +31,11 @@ struct HomeView: View {
                             } placeholder: {
                                 ProgressView()
                             }
-                            
-                            
-                            
-                            
+   
                             Button(action: {
-                                
+                                isFavorited.toggle()
                             }) {
-                                Image(systemName: isFavorited == true ? "heart.arrow" : "heart")
+                                Image(systemName: isFavorited == true ? "heart.fill" : "heart")
                             }
                             .position(x:10, y:10)
                         }

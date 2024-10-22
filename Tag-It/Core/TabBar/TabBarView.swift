@@ -41,7 +41,7 @@ struct TabBarView: View {
                 }
                 .tag(Tab.camera)
             
-            Text("Favorite")
+            FavoriteView()
                 .tabItem {
                     Image(systemName: Tab.favorite.rawValue)
                     Text("Favorite")
