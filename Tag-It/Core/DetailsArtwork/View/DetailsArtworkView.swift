@@ -9,6 +9,9 @@ import SwiftUI
 import MapKit
 
 struct DetailsArtworkView: View {
+    @StateObject var viewModel = DetailsArtworkViewModel()
+    let artworkID: String
+
     var body: some View {
         ScrollView {
             VStack {
@@ -97,5 +100,5 @@ struct RowDetailsArtworkView: View {
 }
 
 #Preview {
-    DetailsArtworkView()
+    DetailsArtworkView(artworkID: "")
 }
