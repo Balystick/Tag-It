@@ -11,7 +11,7 @@ import SwiftUI
 class HomeViewModel: ObservableObject {
     @Published var artworks: [Artwork] = []
     
-    private let baseURL = "http://localhost:8080/artworks"
+    private let baseURL = "http://10.80.56.128:8080/artworks"
     
     func fetchArtWorks() {
         guard let url = URL(string: baseURL) else {
@@ -113,17 +113,17 @@ class HomeViewModel: ObservableObject {
 
 
 // Get All
-//GET : http://localhost:3000/artworks
+//GET : http://10.80.56.128:3000/artworks
 //
 // Get 1 contact with id=3
-//GET : http://localhost:3000/artworks/3
+//GET : http://10.80.56.128:3000/artworks/3
 //
 // Insert Contact (request.httpBody)
-//POST : http://localhost:3000/artworks
+//POST : http://10.80.56.128:3000/artworks
 //
 // Uptade Contact with id=5 with :  (request.httpBody)
-//PUT : http://localhost:3000/artworks/5
+//PUT : http://10.80.56.128:3000/artworks/5
 //
 // Remove contact with id=9
-//DELETE : http://localhost:3000/artworks/9
+//DELETE : http://10.80.56.128:3000/artworks/9
 

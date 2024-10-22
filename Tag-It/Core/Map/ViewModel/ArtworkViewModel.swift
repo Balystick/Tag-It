@@ -10,7 +10,7 @@ class ArtworkFetcher: ObservableObject {
     @Published var artworks: [Artwork] = []
 
     func fetchElements() {
-        guard let url = URL(string: "http://localhost:8080/artworks") else { return }
+        guard let url = URL(string: "http://10.80.56.128:8080/artworks") else { return }
 
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {

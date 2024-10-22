@@ -24,7 +24,7 @@ struct HomeView: View {
                 LazyVGrid(columns: columns , spacing: 20) {
                     ForEach(viewModel.artworks) { artwork in
                         ZStack {
-                            AsyncImage(url: URL(string: "http://localhost:8080/images/\(artwork.image)")) { image in
+                            AsyncImage(url: URL(string: "http://10.80.56.128:8080/images/\(artwork.image)")) { image in
                                 image
                                     .resizable()
                                     .scaledToFit()

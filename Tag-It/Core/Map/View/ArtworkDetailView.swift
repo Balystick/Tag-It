@@ -15,7 +15,7 @@ struct ArtworkDetailView: View {
                 .font(.title2)
                 .padding()
             
-            AsyncImage(url: URL(string: "http://localhost:8080/images/\(artwork.image)")) { image in
+            AsyncImage(url: URL(string: "http://10.80.56.128:8080/images/\(artwork.image)")) { image in
                 image
                     .resizable()
                     .scaledToFit()
