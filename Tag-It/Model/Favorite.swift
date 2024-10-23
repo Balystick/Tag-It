@@ -10,6 +10,6 @@ import SwiftUI
 struct Favorite: Codable, Identifiable {
     var id: UUID
     var dateAdded : String
-    var id_artwork: UUID
-    var id_user: UUID
+    var idArtwork: UUID
+    var idUser: UUID
 }
