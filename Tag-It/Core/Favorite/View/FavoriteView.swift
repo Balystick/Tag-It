@@ -36,7 +36,8 @@ struct FavoriteView: View {
                         favoriteViewModel.favorites.contains { $0.id_artwork == artwork.id }
                     }) { artwork in
                         if let userId = profileViewModel.user?.id {
-                            ArtworkItemView(artwork: artwork, imageSize: imageSize, userId: userId, favoriteViewModel: favoriteViewModel)
+                            let artistName = homeViewModel.getArtistName(for: artwork)
+                            ArtworkItemView(artwork: artwork, imageSize: imageSize, userId: userId, favoriteViewModel: favoriteViewModel, artistName: artistName)
                         } else {
                             Text("User not found")
                         }
@@ -47,6 +48,7 @@ struct FavoriteView: View {
         }
         .onAppear {
             homeViewModel.fetchArtWorks()
+            homeViewModel.fetchArtists()
             profileViewModel.fetchUser(by: UUID(uuidString: "3f223c8d-9e67-4fad-8aca-ae563172b205")!)
             favoriteViewModel.fetchFavorites(userId: UUID(uuidString: "3f223c8d-9e67-4fad-8aca-ae563172b205")!)
         }

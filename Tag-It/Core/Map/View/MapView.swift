@@ -10,6 +10,7 @@ import MapKit
 
 struct MapView: View {
     @StateObject var fetcher = ArtworkFetcher()
+    @StateObject private var homeViewModel = HomeViewModel()
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 48.8566, longitude: 2.3522), // Coordonnées de Paris
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1) // Zoom
@@ -30,10 +31,12 @@ struct MapView: View {
         }
         .onAppear {
             fetcher.fetchElements()
+            homeViewModel.fetchArtists()
         }
         .edgesIgnoringSafeArea(.all)
         .sheet(item: $selectedArtwork) { artwork in
-            DetailsArtworkView(artwork: artwork)
+            let artistName = homeViewModel.getArtistName(for: artwork)
+            DetailsArtworkView(artwork: artwork, artistName: artistName)
         }
     }
 }
