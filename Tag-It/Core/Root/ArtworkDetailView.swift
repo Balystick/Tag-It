@@ -27,6 +27,7 @@ struct ArtworkDetailView: View {
             Text(artwork.address)
             Text(artwork.city)
             Text(artwork.country)
+            Text(artwork.date)
         }
         .padding()
     }
