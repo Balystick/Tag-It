@@ -1,55 +1,55 @@
+
 //
-//  FavoriteViewModel.swift
+//  FavoriteView.swift
 //  Tag-It
 //
-//  Created by Audrey on 22/10/2024.
+//  Created by Audrey on 21/10/2024.
 //
+
 import SwiftUI
 
 struct FavoriteView: View {
     
-    @StateObject private var viewModel = FavoriteViewModel()
+    @StateObject private var homeViewModel = HomeViewModel()
+    @StateObject private var profileViewModel = ProfileViewModel()
+    @StateObject private var favoriteViewModel = FavoriteViewModel()
     
     let columns = [
         GridItem(.adaptive(minimum: 100))
     ]
-//    let img = Image("")
+    let img = Image("")
     
     @State private var isFavorited: Bool = false
-
+    
     var body: some View {
-        VStack {
+        GeometryReader { geometry in
+            let spacing: CGFloat = 10
+            let numberOfColumns = 3
+            let totalSpacing = spacing * (CGFloat(numberOfColumns) - 1)
+            let padding: CGFloat = 20
+            let availableWidth = geometry.size.width - totalSpacing - padding * 2
+            let imageSize = availableWidth / CGFloat(numberOfColumns)
+            
             ScrollView {
-                LazyVGrid(columns: columns , spacing: 20) {
-                    ForEach(viewModel.favorites) { favorite in
-                        ZStack {
-//                            AsyncImage(url: URL(string: "http://localhost:8080/favorites/\(favorites.image)")) { favorite in
-//                                image
-//                                    .resizable()
-//                                    .scaledToFit()
-//                            } placeholder: {
-//                                ProgressView()
-//                            }
-                            
-                            
-                            
-                            
-                            Button(action: {
-                                
-                            }) {
-                                Image(systemName: isFavorited == true ? "heart.arrow" : "heart")
-                            }
-                            .position(x:10, y:10)
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: spacing), count: numberOfColumns), spacing: spacing) {
+                    ForEach(homeViewModel.artworks.filter { artwork in
+                        favoriteViewModel.favorites.contains { $0.id_artwork == artwork.id }
+                    }) { artwork in
+                        if let userId = profileViewModel.user?.id {
+                            ArtworkItemView(artwork: artwork, imageSize: imageSize, userId: userId, favoriteViewModel: favoriteViewModel)
+                        } else {
+                            Text("User not found")
                         }
                     }
                 }
-                .cornerRadius(20)
+                .padding(.horizontal, padding)
             }
         }
         .onAppear {
-            viewModel.fetchFavorites()
+            homeViewModel.fetchArtWorks()
+            profileViewModel.fetchUser(by: UUID(uuidString: "3f223c8d-9e67-4fad-8aca-ae563172b205")!)
+            favoriteViewModel.fetchFavorites(userId: UUID(uuidString: "3f223c8d-9e67-4fad-8aca-ae563172b205")!)
         }
-        .padding()
     }
 }
 

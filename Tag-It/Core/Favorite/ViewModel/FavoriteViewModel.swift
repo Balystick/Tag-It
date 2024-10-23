@@ -7,15 +7,14 @@
 
 import Foundation
 
-
 class FavoriteViewModel: ObservableObject {
     @Published var favorites: [Favorite] = []
     
     private let baseURL = "http://localhost:8080/favorites"
     
-    func fetchFavorites() {
-        guard let url = URL(string: baseURL) else {
-            print("Invalid URL")
+    func fetchFavorites(userId: UUID) {
+        guard let url = URL(string: "\(baseURL)?id_user=\(userId)") else {
+            print("URL invalide")
             return
         }
 
@@ -27,90 +26,66 @@ class FavoriteViewModel: ObservableObject {
                         self.favorites = decodedFavorites
                     }
                 } catch {
-                    print("Error decoding data: \(error)")
+                    print("Erreur lors du décodage des favoris: \(error)")
                 }
-            }
-            else if let error = error {
-                print("Error fetching data: \(error)")
+            } else if let error = error {
+                print("Erreur lors de la requête: \(error)")
             }
         }.resume()
     }
-
+    
     func addFavorite(idArtwork: UUID, idUser: UUID) {
+        let favorite =
+        Favorite(id: UUID(),
+                 date_added: String(ISO8601DateFormatter().string(from: Date()).prefix(10)),
+                 id_artwork: idArtwork,
+                 id_user: idUser)
         
-        let favorite = Favorite(id: UUID(), dateAdded: String(ISO8601DateFormatter().string(from: Date()).prefix(10)), idArtwork: idArtwork, idUser: idUser)
-            guard let url = URL(string: baseURL) else {
-                print("Invalid URL")
-                return
-            }
-
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            do {
-                let data = try JSONEncoder().encode(favorite)
-                request.httpBody = data
-            } catch {
-                print("Error encoding contact: \(error)")
-                return
-            }
-
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    print("Error adding contact: \(error)")
-                    return
-                }
-                self.fetchFavorites()
-            }.resume()
-        print("favori added")
+        guard let url = URL(string: baseURL) else {
+            print("Invalid URL")
+            return
         }
-
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        do {
+            let data = try JSONEncoder().encode(favorite)
+            request.httpBody = data
+        } catch {
+            print("Error encoding contact: \(error)")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error adding contact: \(error)")
+                return
+            }
+        }.resume()
+    }
     
-    func updateFavorite(_ favorite: Favorite) {
-            guard let url = URL(string: "\(baseURL)/\(favorite.id)") else {
-                print("Invalid URL")
-                return
-            }
-
-            var request = URLRequest(url: url)
-            request.httpMethod = "PUT"
-            do {
-                let data = try JSONEncoder().encode(favorite)
-                request.httpBody = data
-            } catch {
-                print("Error encoding contact: \(error)")
-                return
-            }
-
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    print("Error updating contact: \(error)")
-                    return
-                }
-                self.fetchFavorites()
-            }.resume()
+    func deleteFavorite(favoriteId: UUID) {
+        guard let url = URL(string: "\(baseURL)/\(favoriteId)") else {
+            print("URL invalide")
+            return
         }
-
-        func deleteFavorite(_ favorite: Favorite) {
-            guard let url = URL(string: "\(baseURL)/\(favorite.id)") else {
-                print("Invalid URL")
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Erreur lors de la suppression du favori: \(error)")
                 return
             }
-
-            var request = URLRequest(url: url)
-            request.httpMethod = "DELETE"
-
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    print("Error deleting contact: \(error)")
-                    return
-                }
-
-                self.fetchFavorites()
-            }.resume()
-            print("favori deleted")
-        }
-
-
-
+            DispatchQueue.main.async {
+                self.favorites.removeAll { $0.id == favoriteId }
+            }
+        }.resume()
+    }
     
+    func isFavorited(artworkId: UUID) -> Bool {
+        return favorites.contains { $0.id_artwork == artworkId }
+    }
 }

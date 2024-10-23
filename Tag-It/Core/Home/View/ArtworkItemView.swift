@@ -10,10 +10,14 @@ import SwiftUI
 struct ArtworkItemView: View {
     let artwork: Artwork
     let imageSize: CGFloat
-    @State private var isFavorited: Bool = false
+    let userId: UUID
+    @ObservedObject var favoriteViewModel: FavoriteViewModel
     @State private var showDetail: Bool = false
-    @StateObject private var viewModel = FavoriteViewModel()
-    
+
+    var isFavorited: Bool {
+        favoriteViewModel.isFavorited(artworkId: artwork.id)
+    }
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
             Button(action: {
@@ -30,16 +34,18 @@ struct ArtworkItemView: View {
                         .frame(width: imageSize, height: imageSize)
                 }
             }
-            
-            Button(action: {
-                if isFavorited == false{
-                    isFavorited.toggle()
-                    viewModel.addFavorite(idArtwork: artwork.id, idUser: UUID())
-                } else if isFavorited == true {
-                    isFavorited.toggle()
-                    viewModel.deleteFavorite(Favorite(id: UUID(), dateAdded: "", idArtwork: artwork.id, idUser: UUID()))
-                }
 
+            Button(action: {
+                if isFavorited {
+                    if let favorite = favoriteViewModel.favorites.first(where: { $0.id_artwork == artwork.id }) {
+                        favoriteViewModel.deleteFavorite(favoriteId: favorite.id)
+                    }
+                } else {
+                    favoriteViewModel.addFavorite(idArtwork: artwork.id, idUser: userId)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    favoriteViewModel.fetchFavorites(userId: userId)
+                }
             }) {
                 Image(systemName: isFavorited ? "heart.fill" : "heart")
                     .foregroundColor(.red)
@@ -52,6 +58,9 @@ struct ArtworkItemView: View {
         .frame(width: imageSize, height: imageSize)
         .sheet(isPresented: $showDetail) {
             ArtworkDetailView(artwork: artwork)
+        }
+        .onAppear {
+            favoriteViewModel.fetchFavorites(userId: userId)
         }
     }
 }
