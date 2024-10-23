@@ -12,6 +12,7 @@ struct ArtworkItemView: View {
     let imageSize: CGFloat
     @State private var isFavorited: Bool = false
     @State private var showDetail: Bool = false
+    @StateObject private var viewModel = FavoriteViewModel()
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -31,7 +32,14 @@ struct ArtworkItemView: View {
             }
             
             Button(action: {
-                isFavorited.toggle()
+                if isFavorited == false{
+                    isFavorited.toggle()
+                    viewModel.addFavorite(idArtwork: artwork.id, idUser: UUID())
+                } else if isFavorited == true {
+                    isFavorited.toggle()
+                    viewModel.deleteFavorite(Favorite(id: UUID(), dateAdded: "", idArtwork: artwork.id, idUser: UUID()))
+                }
+
             }) {
                 Image(systemName: isFavorited ? "heart.fill" : "heart")
                     .foregroundColor(.red)

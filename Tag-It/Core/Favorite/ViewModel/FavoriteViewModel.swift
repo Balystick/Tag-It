@@ -36,7 +36,9 @@ class FavoriteViewModel: ObservableObject {
         }.resume()
     }
 
-    func addFavorite(_ favorite: Favorite) {
+    func addFavorite(idArtwork: UUID, idUser: UUID) {
+        
+        let favorite = Favorite(id: UUID(), dateAdded: String(ISO8601DateFormatter().string(from: Date()).prefix(10)), idArtwork: idArtwork, idUser: idUser)
             guard let url = URL(string: baseURL) else {
                 print("Invalid URL")
                 return
@@ -59,6 +61,7 @@ class FavoriteViewModel: ObservableObject {
                 }
                 self.fetchFavorites()
             }.resume()
+        print("favori added")
         }
 
     
@@ -104,6 +107,7 @@ class FavoriteViewModel: ObservableObject {
 
                 self.fetchFavorites()
             }.resume()
+            print("favori deleted")
         }
 
 
