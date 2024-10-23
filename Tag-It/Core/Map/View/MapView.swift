@@ -19,7 +19,13 @@ struct MapView: View {
     var body: some View {
         Map(coordinateRegion: $region, annotationItems: fetcher.artworks) { artwork in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: artwork.latitude, longitude: artwork.longitude)) {
-                AnnotationView(artwork: artwork, selectedArtwork: $selectedArtwork)
+                Image(systemName: "mappin.circle.fill")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(.blue)
+                    .onTapGesture {
+                        selectedArtwork = artwork
+                    }
             }
         }
         .onAppear {

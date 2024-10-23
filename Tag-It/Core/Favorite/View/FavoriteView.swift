@@ -23,13 +23,13 @@ struct FavoriteView: View {
                 LazyVGrid(columns: columns , spacing: 20) {
                     ForEach(viewModel.favorites) { favorite in
                         ZStack {
-                            AsyncImage(url: URL(string: "http://localhost:8080/favorites/\(favorites.image)")) { favorite in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                ProgressView()
-                            }
+//                            AsyncImage(url: URL(string: "http://localhost:8080/favorites/\(favorites.image)")) { favorite in
+//                                image
+//                                    .resizable()
+//                                    .scaledToFit()
+//                            } placeholder: {
+//                                ProgressView()
+//                            }
                             
                             
                             

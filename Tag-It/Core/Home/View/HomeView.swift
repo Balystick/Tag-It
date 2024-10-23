@@ -14,43 +14,31 @@ struct HomeView: View {
     let columns = [
         GridItem(.adaptive(minimum: 100))
     ]
-//    let img = Image("")
+    let img = Image("")
     
     @State private var isFavorited: Bool = false
-
+    
     var body: some View {
-        VStack {
+        GeometryReader { geometry in
+            let spacing: CGFloat = 10
+            let numberOfColumns = 3
+            let totalSpacing = spacing * (CGFloat(numberOfColumns) - 1)
+            let padding: CGFloat = 20
+            let availableWidth = geometry.size.width - totalSpacing - padding * 2
+            let imageSize = availableWidth / CGFloat(numberOfColumns)
+            
             ScrollView {
-                LazyVGrid(columns: columns , spacing: 20) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: spacing), count: numberOfColumns), spacing: spacing) {
                     ForEach(viewModel.artworks) { artwork in
-                        ZStack {
-                            AsyncImage(url: URL(string: "http://localhost:8080/images/\(artwork.image)")) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            
-                            
-                            
-                            
-                            Button(action: {
-                                
-                            }) {
-                                Image(systemName: isFavorited == true ? "heart.arrow" : "heart")
-                            }
-                            .position(x:10, y:10)
-                        }
+                        ArtworkItemView(artwork: artwork, imageSize: imageSize)
                     }
                 }
-                .cornerRadius(20)
+                .padding(.horizontal, padding)
             }
         }
         .onAppear {
             viewModel.fetchArtWorks()
         }
-        .padding()
     }
 }
 

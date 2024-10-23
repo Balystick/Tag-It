@@ -18,5 +18,6 @@ struct Artwork: Codable, Identifiable {
     let date: String
     let latitude: Double
     let longitude: Double
+    let id_artist: UUID
 }
 
