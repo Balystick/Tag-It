@@ -13,45 +13,55 @@ struct FavoriteView: View {
     let columns = [
         GridItem(.adaptive(minimum: 100))
     ]
-//    let img = Image("")
+    let img = Image("")
     
     @State private var isFavorited: Bool = false
-
+    
+    let headerFont = Font.custom(FontNameManager.Pixel.bold, size: 35)
+    let regularTextFont = Font.custom(FontNameManager.Pixel.regular, size: 25)
+    
     var body: some View {
-        VStack {
-            ScrollView {
-                LazyVGrid(columns: columns , spacing: 20) {
-                    ForEach(viewModel.favorites) { favorite in
-                        ZStack {
-//                            AsyncImage(url: URL(string: "http://localhost:8080/favorites/\(favorites.image)")) { favorite in
-//                                image
-//                                    .resizable()
-//                                    .scaledToFit()
-//                            } placeholder: {
-//                                ProgressView()
-//                            }
-                            
-                            
-                            
-                            
-                            Button(action: {
-                                
-                            }) {
-                                Image(systemName: isFavorited == true ? "heart.arrow" : "heart")
-                            }
-                            .position(x:10, y:10)
-                        }
-                    }
+        GeometryReader { geometry in
+            let spacing: CGFloat = 10
+            let numberOfColumns = 3
+            let totalSpacing = spacing * (CGFloat(numberOfColumns) - 1)
+            let padding: CGFloat = 20
+            let availableWidth = geometry.size.width - totalSpacing - padding * 2
+            let imageSize = availableWidth / CGFloat(numberOfColumns)
+            
+            
+            if viewModel.favorites.isEmpty {
+                VStack{
+                    Spacer()
+                    Text("Il semble que cette page soit aussi vide qu’un mur avant l’arrivée d’un street artist…Prêt à changer ça ?")
+                        .font(regularTextFont)
+                        .multilineTextAlignment(.center)
+                    Image("cat.cry")
+                    Spacer()
+                    Spacer()
                 }
-                .cornerRadius(20)
+                .padding(30)
+
+                    
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: spacing), count: numberOfColumns), spacing: spacing) {
+    //                    ForEach(viewModel.favorites) { artwork in
+    //                        ArtworkItemView(artwork: artwork, imageSize: imageSize)
+    //                    }
+                    }
+                    .padding(.horizontal, padding)
+                }
             }
-        }
-        .onAppear {
+
+            }
+            .onAppear {
             viewModel.fetchFavorites()
         }
-        .padding()
+ 
     }
 }
+
 
 #Preview {
     FavoriteView()
