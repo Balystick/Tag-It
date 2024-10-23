@@ -8,6 +8,6 @@
 import Foundation
 
 class Artist: Codable, Identifiable {
-    let id: UUID
-    let title: String
+    var id: UUID?
+    var name: String
 }

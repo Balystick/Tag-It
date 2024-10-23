@@ -9,18 +9,22 @@ import SwiftUI
 import MapKit
 
 struct DetailsArtworkView: View {
+    @Environment(\.dismiss) var dismiss
+    @State private var position = MapCameraPosition.automatic
+    @State private var isPresenting = false
+    
     let artwork: Artwork
     private let baseURL = "http://localhost:8080/thumbs/thumb_"
 
     var body: some View {
-        ScrollView {
+        ScrollView(.vertical) {
             VStack {
                 AsyncImage(url: URL(string: "\(baseURL)\(artwork.image)")) { image in
-                    NavigationLink {
-                        ArtworkView(artwork: artwork)
+                    Button {
+                        isPresenting.toggle()
                     } label: {
                         image
-                            .frame(maxWidth: .infinity, maxHeight: 250)
+                            .frame(maxWidth: 300, minHeight: 250)
                             .scaledToFill()
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                             .clipped()
@@ -35,7 +39,7 @@ struct DetailsArtworkView: View {
                 .padding(16)
                 
                 HStack {
-                    Text("Unknown Author")
+                    Text(artwork.artist_name ?? "Unknown Artist")
                         .font(.headline)
                         .foregroundStyle(.primary)
                 }
@@ -65,10 +69,13 @@ struct DetailsArtworkView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .padding(.horizontal, 16)
                 
-                Map()
-                    .frame(maxWidth: .infinity, minHeight: 250)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .padding()
+                Map(position: $position) {
+                    Marker(artwork.address, coordinate: CLLocationCoordinate2D(latitude: artwork.latitude, longitude: artwork.longitude))
+                }
+                .mapStyle(.standard(elevation: .flat))
+                .frame(maxWidth: .infinity, minHeight: 250)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .padding()
                 
                 Button {
                     //
@@ -86,6 +93,9 @@ struct DetailsArtworkView: View {
             .background(.ultraThinMaterial)
             .navigationTitle("Details")
             .navigationBarTitleDisplayMode(.inline)
+            .fullScreenCover(isPresented: $isPresenting) {
+                ArtworkView(artwork: artwork)
+            }
         }
     }
 }
