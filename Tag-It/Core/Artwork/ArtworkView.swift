@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ArtworkView: View {
     @State private var scale: CGFloat = 1.0
-
+    @Environment(\.dismiss) var dismiss
     let artwork: Artwork
     private let baseURL = "http://localhost:8080/images"
     
@@ -18,6 +18,19 @@ struct ArtworkView: View {
             // --- AB Testing ---
             // ScrollView([.vertical, .horizontal], showsIndicators: false) {
             ScrollView {
+                HStack {
+                    Spacer()
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 24))
+                            .foregroundStyle(.black)
+                    }
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                
                 AsyncImage(url: URL(string: "\(baseURL)/\(artwork.image)")) { image in
                     image
                         .resizable()

@@ -10,7 +10,8 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @State private var selectedArtwork: Artwork? = nil
-    @State private var isFavorited: Bool = false
+    @State private var isFavorited = false
+    @State private var isPresenting = false
     
     private let gridItems: [GridItem] = [
             .init(.flexible(), spacing: 1),
@@ -40,6 +41,9 @@ struct HomeView: View {
                                     }
                                 } placeholder: {
                                     ProgressView()
+                                }
+                                .fullScreenCover(isPresented: $isPresenting) {
+                                    DetailsArtworkView(artwork: artwork)
                                 }
                                 
                                 Button {

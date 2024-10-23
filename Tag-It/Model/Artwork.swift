@@ -20,5 +20,5 @@ struct Artwork: Codable, Identifiable {
     var longitude: Double
     var points: String
     var id_artist: UUID?
+    var artist_name: String?
 }
-
