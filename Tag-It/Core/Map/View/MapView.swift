@@ -33,7 +33,7 @@ struct MapView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .sheet(item: $selectedArtwork) { artwork in
-            ArtworkDetailView(artwork: artwork)
+            DetailsArtworkView(artwork: artwork)
         }
     }
 }

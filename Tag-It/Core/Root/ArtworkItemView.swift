@@ -57,7 +57,7 @@ struct ArtworkItemView: View {
         }
         .frame(width: imageSize, height: imageSize)
         .sheet(isPresented: $showDetail) {
-            ArtworkDetailView(artwork: artwork)
+            DetailsArtworkView(artwork: artwork)
         }
         .onAppear {
             favoriteViewModel.fetchFavorites(userId: userId)
