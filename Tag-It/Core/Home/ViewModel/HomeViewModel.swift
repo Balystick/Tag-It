@@ -15,6 +15,7 @@ class HomeViewModel: ObservableObject {
     private let baseArtworksURL = "http://localhost:8080/artworks"
     private let baseArtistsURL = "http://localhost:8080/artists"
 
+    // Fetch des œuvres d'art
     func fetchArtWorks() {
         guard let url = URL(string: baseArtworksURL) else {
             print("Invalid URL")
@@ -38,6 +39,7 @@ class HomeViewModel: ObservableObject {
         }.resume()
     }
 
+    // Fetch des artistes
     func fetchArtists() {
         guard let url = URL(string: baseArtistsURL) else {
             print("Invalid URL")
@@ -62,16 +64,19 @@ class HomeViewModel: ObservableObject {
         }.resume()
     }
 
+    // Conversion du tableau d'artistes en dictionnaire
     func convertArtistsArrayToDictionary() {
         self.artistsDico = Dictionary(uniqueKeysWithValues: artists.map { ($0.id, $0) })
     }
 
+    // Vérification si les deux fetchs sont terminés
     private func checkIfDataIsLoaded() {
         if !artworks.isEmpty && !artists.isEmpty {
             self.isDataLoaded = true
         }
     }
 
+    // Récupère le nom de l'artiste pour une œuvre donnée
     func getArtistName(for artwork: Artwork) -> String {
         return artistsDico[artwork.id_artist]?.name ?? "Artiste inconnu"
     }
