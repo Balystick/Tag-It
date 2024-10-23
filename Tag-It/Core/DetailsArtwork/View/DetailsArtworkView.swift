@@ -14,6 +14,7 @@ struct DetailsArtworkView: View {
     @State private var isPresenting = false
     
     let artwork: Artwork
+    let artistName: String
     private let baseURL = "http://localhost:8080/thumbs/thumb_"
     
     var body: some View {
@@ -38,17 +39,17 @@ struct DetailsArtworkView: View {
                 }
                 .padding(16)
                 
-//                HStack {
-                    //                    Text(artwork.artist_name ?? "Unknown Artist")
-                    //                        .font(.headline)
-                    //                        .foregroundStyle(.primary)
-                    //                }
-                    //                .padding()
-                    //                .frame(maxWidth: .infinity)
-                    //                .background(Color.white)
-                    //                .clipShape(RoundedRectangle(cornerRadius: 8))
-                    //                .padding(.horizontal, 16)
-                    //                .padding(.bottom, 16)
+                HStack {
+                                        Text(artistName)
+                                            .font(.headline)
+                                            .foregroundStyle(.primary)
+                                    }
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.white)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .padding(.horizontal, 16)
+                                    .padding(.bottom, 16)
                     
                     VStack(spacing: 0) {
                         RowDetailsArtworkView(title: "Title", value: artwork.title)

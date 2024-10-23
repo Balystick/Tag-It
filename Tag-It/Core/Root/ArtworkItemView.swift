@@ -12,6 +12,7 @@ struct ArtworkItemView: View {
     let imageSize: CGFloat
     let userId: UUID
     @ObservedObject var favoriteViewModel: FavoriteViewModel
+    let artistName: String
     @State private var showDetail: Bool = false
 
     var isFavorited: Bool {
@@ -57,7 +58,7 @@ struct ArtworkItemView: View {
         }
         .frame(width: imageSize, height: imageSize)
         .sheet(isPresented: $showDetail) {
-            DetailsArtworkView(artwork: artwork)
+            DetailsArtworkView(artwork: artwork, artistName: artistName)
         }
         .onAppear {
             favoriteViewModel.fetchFavorites(userId: userId)
