@@ -12,7 +12,8 @@ import SwiftUI
 import Combine // Import Combine for using Publishers
 
 struct UserView: View {
-
+    @State private var progress: Float = 0.7
+    @State private var timeRemaining = 5
     @State private var selectedImage: UIImage?
     @State private var showImagePicker = false
     
@@ -27,9 +28,9 @@ struct UserView: View {
         .padding(24)
         .ignoresSafeArea()
 //        .background(Color.gray.ignoresSafeArea())
-//        .sheet(isPresented: $showImagePicker) {
-//            ImagePicker(image: $selectedImage)
-//        }
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(image: $selectedImage)
+        }
     }
 }
 
@@ -45,13 +46,13 @@ struct ProfileHeader: View {
         VStack {
             // Profile Image
             Spacer()
-
+            Spacer()
             Image(systemName: "pencil.circle")
                 .renderingMode(.original)
                 .font(.largeTitle)
                 .padding()
                 .foregroundStyle(.blue)
-                .multilineTextAlignment(.trailing)
+            
         
             Circle()
                 .fill(Color.black.opacity(0.1))
@@ -224,7 +225,63 @@ struct ProfileHeader: View {
 //    }
 //}
 
+// MARK: - Image Picker
+struct ImagePicker: UIViewControllerRepresentable {
+    @Binding var image: UIImage?
+    
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        @Binding var image: UIImage?
+        
+        init(image: Binding<UIImage?>) {
+            _image = image
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+            if let selectedImage = info[.originalImage] as? UIImage {
+                image = selectedImage
+            }
+            picker.dismiss(animated: true)
+        }
+        
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            picker.dismiss(animated: true)
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(image: $image)
+    }
+    
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+        picker.sourceType = .photoLibrary
+        return picker
+    }
+    
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    
+    
+    
+   public func getCustomFontNames() {
+        // get each of the font families
+        for family in UIFont.familyNames.sorted() {
+            let names = UIFont.fontNames(forFamilyName: family)
+            // print array of names
+            print("Family: \(family) Font names: \(names)")
+        }
+    }
+}
 
+//
+//public struct FontNameManager {
+//    //MARK: name of font family
+//    struct Pixel {
+//        static let regular = "PixelifySans-Medium"
+//        static let bold = "PixelifySans-Bold"
+//        // add rest of the font style names
+//    }
+//}
 #Preview {
     UserView()
 }

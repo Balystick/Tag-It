@@ -208,7 +208,7 @@ public struct FontNameManager {
         static let bold = "PixelifySans-Bold"
         // add rest of the font style names
     }
-}
+} 
 #Preview {
     UserModifyView()
 }
