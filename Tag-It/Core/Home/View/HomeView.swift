@@ -8,32 +8,55 @@
 import SwiftUI
 
 struct HomeView: View {
-    
     @StateObject private var viewModel = HomeViewModel()
+    @State private var selectedArtwork: Artwork? = nil
+    @State private var isFavorited = false
+    @State private var isPresenting = false
     
-    let columns = [
-        GridItem(.adaptive(minimum: 100))
+    private let gridItems: [GridItem] = [
+            .init(.flexible(), spacing: 1),
+            .init(.flexible(), spacing: 1),
+            .init(.flexible(), spacing: 1)
     ]
-    let img = Image("")
-    
-    @State private var isFavorited: Bool = false
-    
+    private let baseURL = "http://localhost:8080/thumbs/thumb_"
+
     var body: some View {
-        GeometryReader { geometry in
-            let spacing: CGFloat = 10
-            let numberOfColumns = 3
-            let totalSpacing = spacing * (CGFloat(numberOfColumns) - 1)
-            let padding: CGFloat = 20
-            let availableWidth = geometry.size.width - totalSpacing - padding * 2
-            let imageSize = availableWidth / CGFloat(numberOfColumns)
-            
-            ScrollView {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: spacing), count: numberOfColumns), spacing: spacing) {
-                    ForEach(viewModel.artworks) { artwork in
-                        ArtworkItemView(artwork: artwork, imageSize: imageSize)
+        NavigationStack {
+            GeometryReader { geometry in
+                ScrollView {
+                    LazyVGrid(columns: gridItems , spacing: 2) {
+                        ForEach(viewModel.artworks) { artwork in
+                            ZStack {
+                                AsyncImage(url: URL(string: "\(baseURL)\(artwork.image)")) { image in
+                                    NavigationLink {
+                                        DetailsArtworkView(artwork: artwork)
+                                    } label: {
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: geometry.size.width / 3 - 1,
+                                                   height: geometry.size.width / 3 - 1
+                                            )
+                                            .clipped()
+                                    }
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .fullScreenCover(isPresented: $isPresenting) {
+                                    DetailsArtworkView(artwork: artwork)
+                                }
+                                
+                                Button {
+                                    //
+                                } label: {
+                                    Image(systemName: isFavorited == true ? "heart.arrow" : "heart")
+                                }
+                                .position(x:-16, y:-16)
+                            }
+                        }
                     }
                 }
-                .padding(.horizontal, padding)
+                .onAppear { viewModel.fetchArtWorks() }
             }
         }
         .onAppear {

@@ -105,10 +105,6 @@ class HomeViewModel: ObservableObject {
                 self.fetchArtWorks()
             }.resume()
         }
-
-
-
-    
 }
 
 

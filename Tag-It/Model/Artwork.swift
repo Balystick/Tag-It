@@ -8,16 +8,17 @@
 import Foundation
 
 struct Artwork: Codable, Identifiable {
-    let id: UUID
-    let title: String
-    let image: String
-    let type: String
-    let address: String
-    let city: String
-    let country: String
-    let date: String
-    let latitude: Double
-    let longitude: Double
-    let id_artist: UUID
+    var id: UUID?
+    var title: String
+    var image: String
+    var type: String
+    var address: String
+    var city: String
+    var country: String
+    var date: String
+    var latitude: Double
+    var longitude: Double
+    var points: String
+    var id_artist: UUID?
+    var artist_name: String?
 }
-
