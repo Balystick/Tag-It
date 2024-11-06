@@ -34,10 +34,10 @@ struct ArtworkItemView: View {
             Button(action: {
                 if isFavorited == false{
                     isFavorited.toggle()
-                    viewModel.addFavorite(idArtwork: artwork.id, idUser: UUID())
+//                    viewModel.addFavorite(idArtwork: artwork.id, idUser: UUID())
                 } else if isFavorited == true {
                     isFavorited.toggle()
-                    viewModel.deleteFavorite(Favorite(id: UUID(), dateAdded: "", idArtwork: artwork.id, idUser: UUID()))
+//                    viewModel.deleteFavorite(Favorite(id: UUID(), dateAdded: "", idArtwork: artwork.id, idUser: UUID()))
                 }
 
             }) {
