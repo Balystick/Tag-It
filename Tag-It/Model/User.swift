@@ -13,6 +13,6 @@ class User: Codable, Identifiable {
     let name: String
     let image: String
     let email: String
-    let password: String
+    let password: String?
     let points: Int
 }

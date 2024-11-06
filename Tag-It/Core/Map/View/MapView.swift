@@ -31,12 +31,10 @@ struct MapView: View {
         }
         .onAppear {
             fetcher.fetchElements()
-            homeViewModel.fetchArtists()
         }
         .edgesIgnoringSafeArea(.all)
         .sheet(item: $selectedArtwork) { artwork in
-            let artistName = homeViewModel.getArtistName(for: artwork)
-            DetailsArtworkView(artwork: artwork, artistName: artistName)
+            DetailsArtworkView(artwork: artwork)
         }
     }
 }
