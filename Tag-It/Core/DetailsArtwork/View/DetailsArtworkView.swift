@@ -14,7 +14,6 @@ struct DetailsArtworkView: View {
     @State private var isPresenting = false
     
     let artwork: Artwork
-    let artistName: String
     private let baseURL = "http://localhost:8080/thumbs/thumb_"
     
     var body: some View {
@@ -40,9 +39,15 @@ struct DetailsArtworkView: View {
                 .padding(16)
                 
                 HStack {
-                    Text(artistName)
-                        .font(.headline)
-                        .foregroundStyle(.primary)
+                    if let artistName = artwork.artist_name {
+                        Text(artistName)
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                    } else {
+                        Text("Artiste inconnu")
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                    }
                 }
                 .padding()
                 .frame(maxWidth: .infinity)

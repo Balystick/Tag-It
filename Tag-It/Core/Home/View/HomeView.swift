@@ -33,8 +33,7 @@ struct HomeView: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: spacing), count: numberOfColumns), spacing: spacing) {
                     ForEach(homeViewModel.artworks) { artwork in
                         if let userId = profileViewModel.user?.id {
-                            let artistName = homeViewModel.getArtistName(for: artwork)
-                            ArtworkItemView(artwork: artwork, imageSize: imageSize, userId: userId, favoriteViewModel: favoriteViewModel, artistName: artistName)
+                            ArtworkItemView(artwork: artwork, imageSize: imageSize, userId: userId, favoriteViewModel: favoriteViewModel)
                         } else {
                             Text("User not found")
                         }
@@ -45,7 +44,6 @@ struct HomeView: View {
         }
         .onAppear {
             homeViewModel.fetchArtWorks()
-            homeViewModel.fetchArtists()
             profileViewModel.fetchUser(by: UUID(uuidString: "3f223c8d-9e67-4fad-8aca-ae563172b205")!)
             favoriteViewModel.fetchFavorites(userId: UUID(uuidString: "3f223c8d-9e67-4fad-8aca-ae563172b205")!)
         }
