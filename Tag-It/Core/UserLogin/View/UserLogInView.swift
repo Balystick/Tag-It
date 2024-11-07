@@ -15,7 +15,7 @@ struct UserLoginView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
+            VStack {
                 Spacer()
                 
                 Image(.logo)
@@ -24,7 +24,9 @@ struct UserLoginView: View {
                     .frame(width: 150, height: 150)
                     .clipShape(Circle())
                 
-                VStack {
+                Spacer()
+                
+                VStack(spacing: 20) {
                     VStack(alignment: .leading) {
                         Text("Email")
                             .fontWeight(.semibold)
@@ -55,6 +57,8 @@ struct UserLoginView: View {
                 }
                 .foregroundColor(.black)
                 .buttonStyle(.bordered)
+                
+                Spacer()
                 
                 NavigationLink {
                     UserRegisterView()

@@ -12,7 +12,7 @@ struct UserRegisterView: View {
     @State var viewModel = UserRegisterViewModel()
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack {
             Spacer()
             
             Image(.logo)
@@ -23,7 +23,7 @@ struct UserRegisterView: View {
             
             Spacer()
             
-            VStack {
+            VStack(spacing: 20) {
                 VStack(alignment: .leading){
                     Text("Username")
                         .fontWeight(.semibold)
@@ -70,6 +70,8 @@ struct UserRegisterView: View {
                     .foregroundColor(.black)
             }
             .buttonStyle(.bordered)
+            
+            Spacer()
             
             Button {
                 dismiss()
