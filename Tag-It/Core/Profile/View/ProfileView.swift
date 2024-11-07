@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUI
 import Combine // Import Combine for using Publishers
 
 struct ProfileView: View {
@@ -31,11 +30,11 @@ struct ProfileView: View {
     }
 }
 
-// MARK: - Profile Header
 struct ProfileHeader: View {
     @Binding var selectedImage: UIImage?
     @Binding var showImagePicker: Bool
     @StateObject private var profileViewModel = ProfileViewModel()
+    @EnvironmentObject private var contentViewModel: ContentViewModel
     
     let headerFont = Font.custom(FontNameManager.Pixel.bold, size: 25)
     let regularTextFont = Font.custom(FontNameManager.Pixel.regular, size: 25)
@@ -174,6 +173,22 @@ struct ProfileHeader: View {
                         Spacer()
                         Spacer()
                     }
+                    Spacer()
+                    Button(action: {
+                        KeychainManager.deleteTokenFromKeychain()
+                        contentViewModel.isAuthenticated = false
+                    }) {
+                        Text("Se déconnecter")
+                            .font(.body)
+                            .padding(.horizontal, 80)
+                            .padding(.vertical, 10)
+                            .foregroundColor(.black)
+                    }
+                    .foregroundColor(.black)
+                    .buttonStyle(.bordered)
+                    .font(.caption)
+                    .foregroundColor(.blue)
+                    .padding(.top, 10)
                 }
             }
         }
@@ -183,68 +198,6 @@ struct ProfileHeader: View {
         }
     }
 }
-
-// MARK: - Progress Bar
-//struct ProgressBar: View {
-//    var progress: Float
-//
-//    var body: some View {
-//        GeometryReader { geometry in
-//            ZStack(alignment: .leading) {
-//                Rectangle()
-//                    .fill(Color.white.opacity(0.1))
-//                    .frame(height: 12)
-//                    .cornerRadius(6)
-//
-//                Rectangle()
-//                    .fill(Color.white.opacity(0.3))
-//                    .frame(width: geometry.size.width * CGFloat(progress), height: 12)
-//                    .cornerRadius(6)
-//            }
-//        }
-//        .frame(height: 12)
-//        .padding(.bottom, 20)
-//    }
-//}
-
-// MARK: - Quest Section
-//struct QuestSection: View {
-//    @Binding var timeRemaining: Int
-//    let quests: [String]
-//    let timer: Publishers.Autoconnect<Timer.TimerPublisher>
-//
-//    var body: some View {
-//        VStack {
-//            if timeRemaining == 0 {
-//                Text("Finish them all!")
-//                    .padding()
-//                    .foregroundColor(.white)
-//                    .font(.system(size: 20, weight: .bold))
-//            } else {
-//                Text("New missions in: \(timeRemaining)s")
-//                    .onReceive(timer) { _ in
-//                        if timeRemaining > 0 {
-//                            timeRemaining -= 1
-//                        }
-//                    }
-//                    .padding()
-//                    .foregroundColor(.white)
-//                    .font(.system(size: 20, weight: .bold))
-//            }
-//
-//            ForEach(quests.indices, id: \.self) { index in
-//                HStack {
-//                    Text(timeRemaining == 0 ? quests[index] : "Quest loading ...")
-//                        .padding()
-//                        .foregroundColor(.white)
-//                        .font(.system(size: 20, weight: .bold))
-//                    Spacer()
-//                }
-//            }
-//        }
-//    }
-//}
-
 
 #Preview {
     ProfileView()
