@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct UserRegisterView: View {
+    @Environment(\.dismiss) var dismiss
+    @State var viewModel = UserRegisterViewModel()
+
     var body: some View {
         
         Spacer()
@@ -19,21 +22,20 @@ struct UserRegisterView: View {
         Spacer()
         
         VStack(alignment: .leading){
-            Text("Nom Complet")
-            TextField("Veuillez entrer votre nom complet", text: .constant(""))
+            Text("Nom de Profil")
+            TextField("john_doe", text: $viewModel.username)
                 .padding(10)
-                .shadow(color: .gray, radius: 5, x: 20, y: 20)
                 .border(.gray, width: 1)
                 .background(.white)
                 .frame(width: 300)
+                .textInputAutocapitalization(.never)
         }
         .padding()
         
         VStack(alignment: .leading){
-            Text("Nom de profil")
-            TextField("Veuillez entrer votre nom de profil", text: .constant(""))
+            Text("Nom Complet")
+            TextField("John Doe", text: $viewModel.name)
                 .padding(10)
-                .shadow(color: .gray, radius: 5, x: 20, y: 20)
                 .border(.gray, width: 1)
                 .background(.white)
                 .frame(width: 300)
@@ -42,20 +44,20 @@ struct UserRegisterView: View {
         
         VStack(alignment: .leading){
             Text("Email")
-            TextField("Veuillez entrer votre email", text: .constant(""))
+            TextField("Entrer votre email", text: $viewModel.email)
                 .padding(10)
-                .shadow(color: .gray, radius: 5, x: 20, y: 20)
                 .border(.gray, width: 1)
                 .background(.white)
                 .frame(width: 300)
+                .textInputAutocapitalization(.never)
+                .keyboardType(.emailAddress)
         }
         .padding()
         
         VStack(alignment: .leading){
             Text("Mot de passe")
-            TextField("Veuillez entrer votre mot de passe", text: .constant(""))
+            SecureField("Entrer votre mot de passe", text: $viewModel.password)
                 .padding(10)
-                .shadow(color: .gray, radius: 5, x: 20, y: 20)
                 .border(.gray, width: 1)
                 .background(.white)
                 .frame(width: 300)
@@ -64,16 +66,22 @@ struct UserRegisterView: View {
         
         Spacer()
         
-        Button("S'enregistrer") {
-            
+        Button {
+            Task {
+                try await viewModel.registration()
+            }
+        } label: {
+            Text("S'enregistrer")
         }
         .padding(.horizontal, 100)
         .padding(.vertical, 20)
         .foregroundColor(.black)
         .buttonStyle(.bordered)
         
-        Button("Vous avez déjà un compte? Connectez-vous") {
-            UserLogInView()
+        Button {
+            dismiss()
+        } label: {
+            Text("Vous avez déjà un compte? Connectez-vous")
         }
         .font(.caption)
         .foregroundColor(.blue)
