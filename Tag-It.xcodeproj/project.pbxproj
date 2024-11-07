@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E1C29D6E2CDCC71A005E9ED0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C29D6D2CDCC719005E9ED0 /* Security.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		E11283982CB6698C004C8793 /* Tag-It.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tag-It.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1C29D6D2CDCC719005E9ED0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1C29D6E2CDCC71A005E9ED0 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +39,7 @@
 			isa = PBXGroup;
 			children = (
 				E112839A2CB6698C004C8793 /* Tag-It */,
+				E1C29D6C2CDCC719005E9ED0 /* Frameworks */,
 				E11283992CB6698C004C8793 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +50,14 @@
 				E11283982CB6698C004C8793 /* Tag-It.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E1C29D6C2CDCC719005E9ED0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E1C29D6D2CDCC719005E9ED0 /* Security.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
