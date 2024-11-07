@@ -8,10 +8,15 @@
 import Foundation
 
 class UserLoginViewModel: ObservableObject {
+    @Published var errorMessage: ErrorMessage?
         
     func login(email: String, password: String) {
         // Configurer l'url
-        let url: URL = URL(string: "http://127.0.0.1:8080/users/login")!
+        guard let url = URL(string: "http://127.0.0.1:8080/users/login") else {
+            self.errorMessage = ErrorMessage(message: "URL invalide")
+            return
+        }
+        
         var request = URLRequest(url: url)
         
         // Configurer la requete
@@ -24,24 +29,24 @@ class UserLoginViewModel: ObservableObject {
         
         // Executer la requete
         URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil, let responseHttp = response as? HTTPURLResponse, responseHttp.statusCode == 200, let data = data else {
-                print("Error : \(String(describing: error?.localizedDescription))")
-                return
-            }
-            
-            print("Authentification réussie")
-            
-            do {
-                // Decode le token
-                let token = try JSONDecoder().decode(JWToken.self, from: data)
-                print("token : ", token.value)
-                
-                // Sauvegarder le token dans le keychain
-                KeychainManager.saveTokenToKeychain(token: token.value)
-            } catch {
-                print("Il y a une erreur de decodage du token")
-            }
+            DispatchQueue.main.async {
+                   if let error = error {
+                       self.errorMessage = ErrorMessage(message: "Erreur : \(error.localizedDescription)")
+                       return
+                   }
+                   
+                   guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let data = data else {
+                       self.errorMessage = ErrorMessage(message: "Authentification échouée")
+                       return
+                   }
+                   
+                   do {
+                       let token = try JSONDecoder().decode(JWToken.self, from: data)
+                       KeychainManager.saveTokenToKeychain(token: token.value)
+                   } catch {
+                       self.errorMessage = ErrorMessage(message: "Erreur de décodage du token")
+                   }
+               }
         }.resume()
     }
-    
 }
