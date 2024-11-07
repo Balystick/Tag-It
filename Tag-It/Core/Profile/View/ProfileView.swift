@@ -194,7 +194,7 @@ struct ProfileHeader: View {
         }
         .padding(20)
         .onAppear {
-            profileViewModel.fetchUser(by: UUID(uuidString: "3f223c8d-9e67-4fad-8aca-ae563172b205")!)
+            profileViewModel.fetchUser()
         }
     }
 }

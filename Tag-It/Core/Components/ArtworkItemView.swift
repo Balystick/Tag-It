@@ -10,7 +10,6 @@ import SwiftUI
 struct ArtworkItemView: View {
     let artwork: Artwork
     let imageSize: CGFloat
-    let userId: UUID
     @ObservedObject var favoriteViewModel: FavoriteViewModel
     @State private var showDetail: Bool = false
 
@@ -41,11 +40,11 @@ struct ArtworkItemView: View {
                         favoriteViewModel.deleteFavorite(favoriteId: favorite.id)
                     }
                 } else {
-                    favoriteViewModel.addFavorite(idArtwork: artwork.id, idUser: userId)
+//                    favoriteViewModel.addFavorite(idArtwork: artwork.id, idUser: userId)
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    favoriteViewModel.fetchFavorites(userId: userId)
-                }
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//                    favoriteViewModel.fetchFavorites(userId: userId)
+//                }
             }) {
                 Image(systemName: isFavorited ? "heart.fill" : "heart")
                     .foregroundColor(.red)
@@ -60,7 +59,7 @@ struct ArtworkItemView: View {
             DetailsArtworkView(artwork: artwork)
         }
         .onAppear {
-            favoriteViewModel.fetchFavorites(userId: userId)
+//            favoriteViewModel.fetchFavorites(userId: userId)
         }
     }
 }
