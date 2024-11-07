@@ -9,11 +9,20 @@ import Foundation
 
 class ProfileViewModel: ObservableObject {
     @Published var user: User?
-
-    func fetchUser(by uuid: UUID) {
-        guard let url = URL(string: "http://localhost:8080/users/\(uuid.uuidString)") else { return }
-
-        URLSession.shared.dataTask(with: url) { data, response, error in
+    
+    func fetchUser() {
+        guard let url = URL(string: "http://localhost:8080/users/me") else { return }
+        
+        guard let token = KeychainManager.getTokenFromKeychain() else {
+            print("Erreur : aucun token trouvé")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
                 do {
                     let decodedUser = try JSONDecoder().decode(User.self, from: data)
