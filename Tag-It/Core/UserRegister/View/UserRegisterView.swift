@@ -12,57 +12,50 @@ struct UserRegisterView: View {
     @State var viewModel = UserRegisterViewModel()
 
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             Spacer()
             
-            Text("S'enregistrer")
-                .font(.largeTitle)
-                .fontWeight(.bold)
+            Image(.logo)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150, height: 150)
+                .clipShape(Circle())
             
             Spacer()
             
-            VStack(alignment: .leading){
-                Text("Nom de Profil")
-                TextField("john_doe", text: $viewModel.username)
-                    .padding(10)
-                    .border(.gray, width: 1)
-                    .background(.white)
-                    .frame(width: 300)
-                    .textInputAutocapitalization(.never)
+            VStack {
+                VStack(alignment: .leading){
+                    Text("Username")
+                        .fontWeight(.semibold)
+                    TextField("john_doe", text: $viewModel.username)
+                        .modifier(TextFieldModifier())
+                        .textInputAutocapitalization(.never)
+                }
+                
+                VStack(alignment: .leading){
+                    Text("Nom")
+                        .fontWeight(.semibold)
+                    TextField("John Doe", text: $viewModel.name)
+                        .modifier(TextFieldModifier())
+                }
+                
+                VStack(alignment: .leading){
+                    Text("Email")
+                        .fontWeight(.semibold)
+                    TextField("Entrer votre email", text: $viewModel.email)
+                        .modifier(TextFieldModifier())
+                        .textInputAutocapitalization(.never)
+                        .keyboardType(.emailAddress)
+                }
+                
+                VStack(alignment: .leading){
+                    Text("Mot de Passe")
+                        .fontWeight(.semibold)
+                    SecureField("Entrer votre mot de passe", text: $viewModel.password)
+                        .modifier(TextFieldModifier())
+                }
             }
-            .padding()
-            
-            VStack(alignment: .leading){
-                Text("Nom Complet")
-                TextField("John Doe", text: $viewModel.name)
-                    .padding(10)
-                    .border(.gray, width: 1)
-                    .background(.white)
-                    .frame(width: 300)
-            }
-            .padding()
-            
-            VStack(alignment: .leading){
-                Text("Email")
-                TextField("Entrer votre email", text: $viewModel.email)
-                    .padding(10)
-                    .border(.gray, width: 1)
-                    .background(.white)
-                    .frame(width: 300)
-                    .textInputAutocapitalization(.never)
-                    .keyboardType(.emailAddress)
-            }
-            .padding()
-            
-            VStack(alignment: .leading){
-                Text("Mot de passe")
-                SecureField("Entrer votre mot de passe", text: $viewModel.password)
-                    .padding(10)
-                    .border(.gray, width: 1)
-                    .background(.white)
-                    .frame(width: 300)
-            }
-            .padding()
+            .padding(.horizontal, 32)
             
             Spacer()
             
@@ -72,10 +65,10 @@ struct UserRegisterView: View {
                 }
             } label: {
                 Text("S'enregistrer")
+                    .padding(.horizontal, 80)
+                    .padding(.vertical, 10)
+                    .foregroundColor(.black)
             }
-            .padding(.horizontal, 100)
-            .padding(.vertical, 20)
-            .foregroundColor(.black)
             .buttonStyle(.bordered)
             
             Button {
@@ -88,6 +81,7 @@ struct UserRegisterView: View {
             
             Spacer()
         }
+        .navigationBarBackButtonHidden()
     }
 }
 
