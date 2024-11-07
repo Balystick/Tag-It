@@ -5,12 +5,12 @@
 //  Created by Aurélien on 07/11/2024.
 //
 
-import Foundation
+import SwiftUI
 
 class UserLoginViewModel: ObservableObject {
     @Published var errorMessage: ErrorMessage?
         
-    func login(email: String, password: String) {
+    func login(email: String, password: String, contentViewModel: ContentViewModel) {
         // Configurer l'url
         guard let url = URL(string: "http://127.0.0.1:8080/users/login") else {
             self.errorMessage = ErrorMessage(message: "URL invalide")
@@ -43,6 +43,7 @@ class UserLoginViewModel: ObservableObject {
                    do {
                        let token = try JSONDecoder().decode(JWToken.self, from: data)
                        KeychainManager.saveTokenToKeychain(token: token.value)
+                       contentViewModel.isAuthenticated = true
                    } catch {
                        self.errorMessage = ErrorMessage(message: "Erreur de décodage du token")
                    }

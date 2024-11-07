@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct UserLogInView: View {
+struct UserLoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @StateObject private var viewModel = UserLoginViewModel()
-    
+    @EnvironmentObject private var contentViewModel: ContentViewModel
+
     var body: some View {
         
         Spacer()
@@ -48,7 +49,7 @@ struct UserLogInView: View {
         Spacer()
         
         Button(action: {
-            viewModel.login(email: email, password: password)
+            viewModel.login(email: email, password: password, contentViewModel: contentViewModel)
         }) {
             Text("Se connecter")
                 .padding(.horizontal, 80)
@@ -73,5 +74,5 @@ struct UserLogInView: View {
 }
 
 #Preview {
-    UserLogInView()
+    UserLoginView()
 }

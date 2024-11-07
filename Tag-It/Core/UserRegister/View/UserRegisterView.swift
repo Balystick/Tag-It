@@ -73,7 +73,7 @@ struct UserRegisterView: View {
         .buttonStyle(.bordered)
         
         Button("Vous avez déjà un compte? Connectez-vous") {
-            UserLogInView()
+            UserLoginView()
         }
         .font(.caption)
         .foregroundColor(.blue)
