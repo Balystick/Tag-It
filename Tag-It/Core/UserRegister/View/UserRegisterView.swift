@@ -8,77 +8,82 @@
 import SwiftUI
 
 struct UserRegisterView: View {
+    @Environment(\.dismiss) var dismiss
+    @State var viewModel = UserRegisterViewModel()
+
     var body: some View {
-        
-        Spacer()
-        
-        Text("S'enregistrer")
-            .font(.largeTitle)
-            .fontWeight(.bold)
-        
-        Spacer()
-        
-        VStack(alignment: .leading){
-            Text("Nom Complet")
-            TextField("Veuillez entrer votre nom complet", text: .constant(""))
-                .padding(10)
-                .shadow(color: .gray, radius: 5, x: 20, y: 20)
-                .border(.gray, width: 1)
-                .background(.white)
-                .frame(width: 300)
-        }
-        .padding()
-        
-        VStack(alignment: .leading){
-            Text("Nom de profil")
-            TextField("Veuillez entrer votre nom de profil", text: .constant(""))
-                .padding(10)
-                .shadow(color: .gray, radius: 5, x: 20, y: 20)
-                .border(.gray, width: 1)
-                .background(.white)
-                .frame(width: 300)
-        }
-        .padding()
-        
-        VStack(alignment: .leading){
-            Text("Email")
-            TextField("Veuillez entrer votre email", text: .constant(""))
-                .padding(10)
-                .shadow(color: .gray, radius: 5, x: 20, y: 20)
-                .border(.gray, width: 1)
-                .background(.white)
-                .frame(width: 300)
-        }
-        .padding()
-        
-        VStack(alignment: .leading){
-            Text("Mot de passe")
-            TextField("Veuillez entrer votre mot de passe", text: .constant(""))
-                .padding(10)
-                .shadow(color: .gray, radius: 5, x: 20, y: 20)
-                .border(.gray, width: 1)
-                .background(.white)
-                .frame(width: 300)
-        }
-        .padding()
-        
-        Spacer()
-        
-        Button("S'enregistrer") {
+        VStack {
+            Spacer()
             
-        }
-        .padding(.horizontal, 100)
-        .padding(.vertical, 20)
-        .foregroundColor(.black)
-        .buttonStyle(.bordered)
-        
-        Button("Vous avez déjà un compte? Connectez-vous") {
-            UserLoginView()
-        }
-        .font(.caption)
-        .foregroundColor(.blue)
+            Image(.logo)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150, height: 150)
+                .clipShape(Circle())
             
-        Spacer()
+            Spacer()
+            
+            VStack(spacing: 20) {
+                VStack(alignment: .leading){
+                    Text("Username")
+                        .fontWeight(.semibold)
+                    TextField("john_doe", text: $viewModel.username)
+                        .modifier(TextFieldModifier())
+                        .textInputAutocapitalization(.never)
+                }
+                
+                VStack(alignment: .leading){
+                    Text("Nom")
+                        .fontWeight(.semibold)
+                    TextField("John Doe", text: $viewModel.name)
+                        .modifier(TextFieldModifier())
+                }
+                
+                VStack(alignment: .leading){
+                    Text("Email")
+                        .fontWeight(.semibold)
+                    TextField("Entrer votre email", text: $viewModel.email)
+                        .modifier(TextFieldModifier())
+                        .textInputAutocapitalization(.never)
+                        .keyboardType(.emailAddress)
+                }
+                
+                VStack(alignment: .leading){
+                    Text("Mot de Passe")
+                        .fontWeight(.semibold)
+                    SecureField("Entrer votre mot de passe", text: $viewModel.password)
+                        .modifier(TextFieldModifier())
+                }
+            }
+            .padding(.horizontal, 32)
+            
+            Spacer()
+            
+            Button {
+                Task {
+                    try await viewModel.registration()
+                }
+            } label: {
+                Text("S'enregistrer")
+                    .padding(.horizontal, 80)
+                    .padding(.vertical, 10)
+                    .foregroundColor(.black)
+            }
+            .buttonStyle(.bordered)
+            
+            Spacer()
+            
+            Button {
+                dismiss()
+            } label: {
+                Text("Vous avez déjà un compte? Connectez-vous")
+            }
+            .font(.caption)
+            .foregroundColor(.blue)
+            
+            Spacer()
+        }
+        .navigationBarBackButtonHidden()
     }
 }
 

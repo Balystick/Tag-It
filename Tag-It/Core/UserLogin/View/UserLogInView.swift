@@ -14,60 +14,68 @@ struct UserLoginView: View {
     @EnvironmentObject private var contentViewModel: ContentViewModel
 
     var body: some View {
-        
-        Spacer()
-        
-        Text("Se connecter")
-            .font(.largeTitle)
-            .fontWeight(.bold)
-        
-
-        VStack(alignment: .leading){
-            Text("Email")
-            TextField("Veuillez entrer votre email", text: $email)
-                .padding(10)
-                .border(.gray, width: 1)
-                .background(.white)
-                .frame(width: 300)
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-        }
-        .padding()
-        
-        VStack(alignment: .leading){
-            Text("Mot de passe")
-            SecureField("Veuillez entrer votre mot de passe", text: $password)
-                .padding(10)
-                .border(.gray, width: 1)
-                .background(.white)
-                .frame(width: 300)
-        }
-        .padding()
-        
-        Spacer()
-        
-        Button(action: {
-            viewModel.login(email: email, password: password, contentViewModel: contentViewModel)
-        }) {
-            Text("Se connecter")
-                .padding(.horizontal, 80)
-                .padding(.vertical, 10)
+        NavigationStack {
+            VStack {
+                Spacer()
+                
+                Image(.logo)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 150, height: 150)
+                    .clipShape(Circle())
+                
+                Spacer()
+                
+                VStack(spacing: 20) {
+                    VStack(alignment: .leading) {
+                        Text("Email")
+                            .fontWeight(.semibold)
+                        TextField("Entrer votre email", text: $email)
+                            .modifier(TextFieldModifier())
+                            .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Mot de Passe")
+                            .fontWeight(.semibold)
+                        SecureField("Entrer votre mot de passe", text: $password)
+                            .modifier(TextFieldModifier())
+                    }
+                }
+                .padding(.horizontal, 32)
+                
+                Spacer()
+                
+                Button {
+                    viewModel.login(email: email, password: password, contentViewModel: contentViewModel)
+                } label: {
+                    Text("Se connecter")
+                        .padding(.horizontal, 80)
+                        .padding(.vertical, 10)
+                        .foregroundColor(.black)
+                }
                 .foregroundColor(.black)
-        }
-        .foregroundColor(.black)
-        .buttonStyle(.bordered)
-        
-        Button("Vous n'avez pas de compte ? Enregistrez-vous") {
-            UserRegisterView()
-        }
-        .font(.caption)
-        .foregroundColor(.blue)
-        .padding(.top, 10)
-        .alert(item: $viewModel.errorMessage) { errorMessage in
+                .buttonStyle(.bordered)
+                
+                Spacer()
+                
+                NavigationLink {
+                    UserRegisterView()
+                } label: {
+                    Text("Vous n'avez pas de compte ? Enregistrez-vous")
+                }
+                .font(.caption)
+                .foregroundColor(.blue)
+                .padding(.top, 10)
+                .alert(item: $viewModel.errorMessage) { errorMessage in
                     Alert(title: Text("Erreur"), message: Text(errorMessage.message), dismissButton: .default(Text("OK")))
                 }
-            
-        Spacer()
+                
+                Spacer()
+            }
+        }
+        
     }
 }
 

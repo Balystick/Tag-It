@@ -1,8 +1,8 @@
 //
 //  Token.swift
-//  FrontVapor
+//  Tag-It
 //
-//  Created by Amandine Cousin on 31/10/2024.
+//  Created by Tag-It on 31/10/2024.
 //
 
 import Foundation
