@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var contentViewModel: ContentViewModel
+
     var body: some View {
-        TabBarView()
+        if contentViewModel.isAuthenticated {
+            TabBarView()
+        } else {
+            UserLoginView()
+        }
     }
 }
 
