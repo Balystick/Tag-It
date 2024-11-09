@@ -10,6 +10,7 @@ import MapKit
 
 struct DetailsArtworkView: View {
     @Environment(\.dismiss) var dismiss
+    @StateObject private var favoriteViewModel = FavoriteViewModel()
     @State private var position = MapCameraPosition.automatic
     @State private var isPresenting = false
     
@@ -84,7 +85,7 @@ struct DetailsArtworkView: View {
                 .padding()
                 
                 Button {
-                    //
+                    favoriteViewModel.addFavorite(idArtwork: artwork.id)
                 } label: {
                     Text("Add Favorite")
                         .padding()

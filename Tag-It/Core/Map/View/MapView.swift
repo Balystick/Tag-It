@@ -32,7 +32,7 @@ struct MapView: View {
         .onAppear {
             fetcher.fetchElements()
         }
-        .edgesIgnoringSafeArea(.all)
+        .edgesIgnoringSafeArea([.top, .leading, .trailing])
         .sheet(item: $selectedArtwork) { artwork in
             DetailsArtworkView(artwork: artwork)
         }
