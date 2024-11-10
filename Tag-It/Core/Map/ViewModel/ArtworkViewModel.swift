@@ -6,10 +6,14 @@
 //
 import Foundation
 
-class ArtworkFetcher: ObservableObject {
+class ArtworkViewModel: ObservableObject {
     @Published var artworks: [Artwork] = []
+    
+    init() {
+        fetchArtworks()
+    }
 
-    func fetchElements() {
+    func fetchArtworks() {
         guard let url = URL(string: "http://localhost:8080/artworks") else { return }
 
         guard let token = KeychainManager.getTokenFromKeychain() else {

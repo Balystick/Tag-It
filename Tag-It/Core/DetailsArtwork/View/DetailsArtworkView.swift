@@ -10,11 +10,11 @@ import MapKit
 
 struct DetailsArtworkView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject private var favoriteViewModel = FavoriteViewModel()
+    let artwork: Artwork
+    @ObservedObject var favoriteViewModel: FavoriteViewModel
     @State private var position = MapCameraPosition.automatic
     @State private var isPresenting = false
     
-    let artwork: Artwork
     private let baseURL = "http://localhost:8080/thumbs/thumb_"
     
     var body: some View {
@@ -83,19 +83,6 @@ struct DetailsArtworkView: View {
                 .frame(maxWidth: .infinity, minHeight: 250)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .padding()
-                
-                Button {
-                    favoriteViewModel.addFavorite(idArtwork: artwork.id)
-                } label: {
-                    Text("Add Favorite")
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(.black)
-                        .foregroundStyle(.white)
-                        .fontWeight(.semibold)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .padding(.horizontal, 16)
-                }
             }
             .background(.ultraThinMaterial)
             .navigationTitle("Details")

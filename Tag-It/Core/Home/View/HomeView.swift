@@ -8,8 +8,8 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var contentViewModel: ContentViewModel
-    @StateObject private var homeViewModel = HomeViewModel()
-    @StateObject private var favoriteViewModel = FavoriteViewModel()
+    @EnvironmentObject var artworkViewModel: ArtworkViewModel
+    @ObservedObject var favoriteViewModel: FavoriteViewModel
 
     let columns = [
         GridItem(.adaptive(minimum: 100))
@@ -26,21 +26,12 @@ struct HomeView: View {
 
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: spacing), count: numberOfColumns), spacing: spacing) {
-                    ForEach(homeViewModel.artworks) { artwork in
+                    ForEach(artworkViewModel.artworks) { artwork in
                         ArtworkItemView(artwork: artwork, imageSize: imageSize, favoriteViewModel: favoriteViewModel)
                     }
                 }
                 .padding(.horizontal, padding)
             }
         }
-        .onAppear {
-            homeViewModel.fetchArtWorks()
-            favoriteViewModel.fetchFavorites()
-        }
     }
-}
-
-#Preview {
-    HomeView()
-        .environmentObject(ContentViewModel())
 }

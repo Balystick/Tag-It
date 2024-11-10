@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct FavoriteView: View {
-    @StateObject private var homeViewModel = HomeViewModel()
-    @StateObject private var favoriteViewModel = FavoriteViewModel()
-    
+    @EnvironmentObject var artworkViewModel: ArtworkViewModel
+    @ObservedObject var favoriteViewModel: FavoriteViewModel
+
     let columns = [
         GridItem(.adaptive(minimum: 100))
     ]
@@ -35,7 +35,7 @@ struct FavoriteView: View {
                     }
                 } else {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: spacing), count: numberOfColumns), spacing: spacing) {
-                        ForEach(homeViewModel.artworks.filter { artwork in
+                        ForEach(artworkViewModel.artworks.filter { artwork in
                             favoriteViewModel.favorites.contains { $0.id_artwork == artwork.id }
                         }) { artwork in
                             ArtworkItemView(artwork: artwork, imageSize: imageSize, favoriteViewModel: favoriteViewModel)
@@ -45,13 +45,5 @@ struct FavoriteView: View {
                 }
             }
         }
-        .onAppear {
-            homeViewModel.fetchArtWorks()
-            favoriteViewModel.fetchFavorites()
-        }
     }
-}
-
-#Preview {
-    FavoriteView()
 }

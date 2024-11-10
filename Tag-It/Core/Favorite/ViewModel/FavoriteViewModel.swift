@@ -11,6 +11,9 @@ class FavoriteViewModel: ObservableObject {
     @Published var favorites: [Favorite] = []
     
     private let baseURL = "http://localhost:8080/favorites"
+    init() {
+        fetchFavorites()
+    }
     
     func fetchFavorites() {
         guard let url = URL(string: baseURL) else {

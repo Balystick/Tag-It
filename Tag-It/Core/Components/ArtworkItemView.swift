@@ -11,32 +11,40 @@ struct ArtworkItemView: View {
     let imageSize: CGFloat
     @ObservedObject var favoriteViewModel: FavoriteViewModel
     @State private var showDetail: Bool = false
-
-    var isFavorited: Bool {
-        favoriteViewModel.isFavorited(artworkId: artwork.id)
-    }
+    @State private var loadedImage: UIImage?
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            // Bouton les détails de l'œuvre
+            // Affichage de l'image de l'œuvre
+            if let loadedImage = loadedImage {
+                Image(uiImage: loadedImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: imageSize, height: imageSize)
+                    .clipped()
+            } else {
+                ProgressView()
+                    .frame(width: imageSize, height: imageSize)
+                    .onAppear {
+                        loadImage()
+                    }
+            }
+
+            // Bouton pour afficher les détails de l'œuvre
             Button(action: {
                 showDetail = true
             }) {
-                AsyncImage(url: URL(string: "http://localhost:8080/thumbs/thumb_\(artwork.image)")) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: imageSize, height: imageSize)
-                        .clipped()
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: imageSize, height: imageSize)
-                }
+                Rectangle()
+                    .foregroundColor(.clear) // bouton invisible pour déclencher l'affichage des détails
+                    .frame(width: imageSize, height: imageSize)
+            }
+            .sheet(isPresented: $showDetail) {
+                DetailsArtworkView(artwork: artwork, favoriteViewModel: favoriteViewModel)
             }
 
             // Bouton pour ajouter ou retirer des favoris
             Button(action: {
-                if isFavorited {
+                if favoriteViewModel.isFavorited(artworkId: artwork.id) {
                     if let favorite = favoriteViewModel.favorites.first(where: { $0.id_artwork == artwork.id }) {
                         favoriteViewModel.deleteFavorite(favoriteId: favorite.id!)
                     }
@@ -44,7 +52,7 @@ struct ArtworkItemView: View {
                     favoriteViewModel.addFavorite(idArtwork: artwork.id)
                 }
             }) {
-                Image(systemName: isFavorited ? "heart.fill" : "heart")
+                Image(systemName: favoriteViewModel.isFavorited(artworkId: artwork.id) ? "heart.fill" : "heart")
                     .foregroundColor(.red)
                     .padding(6)
             }
@@ -53,8 +61,22 @@ struct ArtworkItemView: View {
             .padding(8)
         }
         .frame(width: imageSize, height: imageSize)
-        .sheet(isPresented: $showDetail) {
-            DetailsArtworkView(artwork: artwork)
+    }
+
+    private func loadImage() {
+        guard let url = URL(string: "http://localhost:8080/thumbs/thumb_\(artwork.image)") else {
+            print("URL invalide pour l'image")
+            return
         }
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data, let uiImage = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    self.loadedImage = uiImage
+                }
+            } else {
+                print("Erreur de chargement de l'image : \(error?.localizedDescription ?? "Inconnue")")
+            }
+        }.resume()
     }
 }

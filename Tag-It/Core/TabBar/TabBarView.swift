@@ -17,17 +17,18 @@ enum Tab: String {
 
 struct TabBarView: View {
     @State private var selectedTab: Tab = .home
+    @StateObject private var favoriteViewModel = FavoriteViewModel()
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView()
+            HomeView(favoriteViewModel: favoriteViewModel)
                 .tabItem {
                     Image(systemName: Tab.home.rawValue)
                     Text("Home")
                 }
                 .tag(Tab.home)
             
-            MapView()
+            MapView(favoriteViewModel: favoriteViewModel)
                 .tabItem {
                     Image(systemName: Tab.map.rawValue)
                     Text("Map")
@@ -41,7 +42,7 @@ struct TabBarView: View {
                 }
                 .tag(Tab.camera)
             
-            FavoriteView()
+            FavoriteView(favoriteViewModel: favoriteViewModel)
                 .tabItem {
                     Image(systemName: Tab.favorite.rawValue)
                     Text("Favorite")

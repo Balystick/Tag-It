@@ -10,10 +10,13 @@ import SwiftUI
 @main
 struct Tag_ItApp: App {
     @StateObject private var contentViewModel = ContentViewModel()
+    @StateObject private var artworkViewModel = ArtworkViewModel()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(contentViewModel)
+                .environmentObject(artworkViewModel)
         }
     }
 }

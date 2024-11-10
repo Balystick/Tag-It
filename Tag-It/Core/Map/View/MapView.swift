@@ -9,8 +9,8 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
-    @StateObject var fetcher = ArtworkFetcher()
-    @StateObject private var homeViewModel = HomeViewModel()
+    @EnvironmentObject var artworkViewModel: ArtworkViewModel
+    @ObservedObject var favoriteViewModel: FavoriteViewModel
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 48.8566, longitude: 2.3522), // Coordonnées de Paris
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1) // Zoom
@@ -18,7 +18,7 @@ struct MapView: View {
     @State private var selectedArtwork: Artwork? = nil
 
     var body: some View {
-        Map(coordinateRegion: $region, annotationItems: fetcher.artworks) { artwork in
+        Map(coordinateRegion: $region, annotationItems: artworkViewModel.artworks) { artwork in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: artwork.latitude, longitude: artwork.longitude)) {
                 Image(systemName: "mappin.circle.fill")
                     .resizable()
@@ -29,18 +29,9 @@ struct MapView: View {
                     }
             }
         }
-        .onAppear {
-            fetcher.fetchElements()
-        }
         .edgesIgnoringSafeArea([.top, .leading, .trailing])
         .sheet(item: $selectedArtwork) { artwork in
-            DetailsArtworkView(artwork: artwork)
+            DetailsArtworkView(artwork: artwork, favoriteViewModel: favoriteViewModel)
         }
-    }
-}
-
-struct Map_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView()
     }
 }
