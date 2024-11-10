@@ -104,7 +104,7 @@ struct DetailsArtworkView: View {
                     .foregroundColor(.white)
                     .fontWeight(.semibold)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 32)
             }
             .padding(.bottom, 16)
         }

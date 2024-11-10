@@ -59,11 +59,14 @@ struct UserRegisterView: View {
                 }
             } label: {
                 Text("S'enregistrer")
-                    .padding(.horizontal, 80)
-                    .padding(.vertical, 10)
-                    .foregroundColor(.black)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.black)
+                    .foregroundColor(.white)
+                    .fontWeight(.semibold)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .padding(.horizontal, 32)
             }
-            .buttonStyle(.bordered)
             
             Spacer()
             

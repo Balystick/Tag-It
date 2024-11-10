@@ -49,7 +49,7 @@ struct ProfileView: View {
 
                         Image("cat.success")
                             .resizable()
-                            .frame(width: 150, height: 150)
+                            .frame(width: 100, height: 100)
 
                         VStack(spacing: 10) {
                             HStack {
@@ -107,12 +107,14 @@ struct ProfileView: View {
                             contentViewModel.currentUser = nil
                         }) {
                             Text("Se déconnecter")
-                                .font(.body)
-                                .padding(.horizontal, 80)
-                                .padding(.vertical, 10)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.black)
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
-                        .buttonStyle(.bordered)
-                        .padding(.top, 10)
+                        Spacer()
                     }
                     .padding(20)
                 } else {

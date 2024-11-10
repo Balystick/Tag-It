@@ -37,7 +37,7 @@ struct UserLoginView: View {
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("Mot de Passe")
+                        Text("Mot de passe")
                             .fontWeight(.semibold)
                         SecureField("Entrer votre mot de passe", text: $viewModel.password)
                             .modifier(TextFieldModifier())
@@ -53,12 +53,14 @@ struct UserLoginView: View {
                     }
                 } label: {
                     Text("Se connecter")
-                        .padding(.horizontal, 80)
-                        .padding(.vertical, 10)
-                        .foregroundColor(.black)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.black)
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .padding(.horizontal, 32)
                 }
-                .foregroundColor(.black)
-                .buttonStyle(.bordered)
                 
                 Spacer()
                 
