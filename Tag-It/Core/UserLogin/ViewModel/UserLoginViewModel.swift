@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+import SwiftUI
+
 class UserLoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
@@ -16,10 +18,26 @@ class UserLoginViewModel: ObservableObject {
     private let baseURL = "http://127.0.0.1:8080/users/login"
 
     func login(contentViewModel: ContentViewModel) async {
+        var errors = [String]()
+
+        if email.isEmpty {
+            errors.append("L'adresse email est obligatoire.")
+        } else if !isValidEmail(email) {
+            errors.append("L'adresse email n'est pas valide.")
+        }
+        
+        if password.isEmpty {
+            errors.append("Le mot de passe est obligatoire.")
+        }
+
+        if !errors.isEmpty {
+            let combinedErrorMessage = errors.joined(separator: "\n")
+            setError(combinedErrorMessage)
+            return
+        }
+
         guard let url = URL(string: baseURL) else {
-            DispatchQueue.main.async {
-                self.errorMessage = ErrorMessage(message: "URL invalide")
-            }
+            setError("URL invalide")
             return
         }
 
@@ -36,9 +54,7 @@ class UserLoginViewModel: ObservableObject {
             let jsonData = try JSONEncoder().encode(loginData)
             request.httpBody = jsonData
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = ErrorMessage(message: "Erreur d'encodage des données de connexion")
-            }
+            setError("Erreur d'encodage des données de connexion")
             return
         }
 
@@ -46,9 +62,7 @@ class UserLoginViewModel: ObservableObject {
             let (data, response) = try await URLSession.shared.data(for: request)
             
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                DispatchQueue.main.async {
-                    self.errorMessage = ErrorMessage(message: "Authentification échouée. Veuillez vérifier vos identifiants.")
-                }
+                setError("Authentification échouée. Veuillez vérifier vos identifiants.")
                 return
             }
             
@@ -62,14 +76,22 @@ class UserLoginViewModel: ObservableObject {
                     contentViewModel.currentUser = authResponse.user
                 }
             } catch {
-                DispatchQueue.main.async {
-                    self.errorMessage = ErrorMessage(message: "Erreur de décodage de la réponse du serveur")
-                }
+                setError("Erreur de décodage de la réponse du serveur")
             }
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = ErrorMessage(message: "Erreur réseau : \(error.localizedDescription)")
-            }
+            setError("Erreur réseau : \(error.localizedDescription)")
+        }
+    }
+    
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
+    }
+    
+    private func setError(_ message: String) {
+        DispatchQueue.main.async {
+            self.errorMessage = ErrorMessage(message: message)
         }
     }
 }

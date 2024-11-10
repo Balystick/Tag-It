@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UserRegisterView: View {
     @Environment(\.dismiss) var dismiss
-    @State var viewModel = UserRegisterViewModel()
+    @StateObject var viewModel = UserRegisterViewModel()
     @EnvironmentObject var contentViewModel: ContentViewModel
 
     var body: some View {
@@ -46,7 +46,7 @@ struct UserRegisterView: View {
                     Text("Mot de Passe")
                         .fontWeight(.semibold)
                     SecureField("Entrer votre mot de passe", text: $viewModel.password)
-                        .modifier(TextFieldModifier())
+                            .modifier(TextFieldModifier())
                 }
             }
             .padding(.horizontal, 32)
@@ -82,8 +82,14 @@ struct UserRegisterView: View {
         }
         .navigationBarBackButtonHidden()
         .alert(item: $viewModel.errorMessage) { errorMessage in
-                   Alert(title: Text("Erreur"), message: Text(errorMessage.message), dismissButton: .default(Text("OK")))
-               }
+            Alert(
+                title: Text("Erreur"),
+                message: Text(errorMessage.message),
+                dismissButton: .default(Text("OK"), action: {
+                    viewModel.errorMessage = nil
+                })
+            )
+        }
     }
 }
 

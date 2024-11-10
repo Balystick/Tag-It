@@ -73,7 +73,13 @@ struct UserLoginView: View {
                 .foregroundColor(.blue)
                 .padding(.top, 10)
                 .alert(item: $viewModel.errorMessage) { errorMessage in
-                    Alert(title: Text("Erreur"), message: Text(errorMessage.message), dismissButton: .default(Text("OK")))
+                    Alert(
+                        title: Text("Erreur"),
+                        message: Text(errorMessage.message),
+                        dismissButton: .default(Text("OK"), action: {
+                            viewModel.errorMessage = nil
+                        })
+                    )
                 }
                 
                 Spacer()
