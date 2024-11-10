@@ -33,5 +33,26 @@ struct HomeView: View {
                 .padding(.horizontal, padding)
             }
         }
+        .onAppear {
+            if contentViewModel.isAuthenticated {
+                artworkViewModel.fetchArtworks()
+                favoriteViewModel.fetchFavorites()
+            }
+        }
+        .onChange(of: contentViewModel.isAuthenticated) { oldValue, newValue in
+            if newValue {
+                artworkViewModel.fetchArtworks()
+                favoriteViewModel.fetchFavorites()
+            }
+        }
+    }
+}
+
+struct HomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView()
+            .environmentObject(ContentViewModel())
+            .environmentObject(ArtworkViewModel())
+            .environmentObject(FavoriteViewModel())
     }
 }

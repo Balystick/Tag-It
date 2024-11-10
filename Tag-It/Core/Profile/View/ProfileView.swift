@@ -5,11 +5,10 @@
 //  Created by Audrey on 23/10/2024.
 //
 import SwiftUI
-import Combine
 
 struct ProfileView: View {
     @EnvironmentObject var contentViewModel: ContentViewModel
-
+    
     var body: some View {
         VStack(spacing: 0) {
             VStack {
@@ -41,16 +40,16 @@ struct ProfileView: View {
                                 .clipShape(Circle())
                                 .padding(.top, 20)
                         }
-
+                        
                         Text(user.username)
                             .font(.title2)
                             .fontWeight(.bold)
                             .padding(.top, 10)
-
+                        
                         Image("cat.success")
                             .resizable()
                             .frame(width: 100, height: 100)
-
+                        
                         VStack(spacing: 10) {
                             HStack {
                                 Image("heart.arrow")
@@ -98,9 +97,9 @@ struct ProfileView: View {
                             }
                         }
                         .padding(.top, 20)
-
+                        
                         Spacer()
-
+                        
                         Button(action: {
                             KeychainManager.deleteTokenFromKeychain()
                             contentViewModel.isAuthenticated = false
@@ -129,7 +128,9 @@ struct ProfileView: View {
     }
 }
 
-#Preview {
-    ProfileView()
-        .environmentObject(ContentViewModel())
+struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileView()
+            .environmentObject(ContentViewModel())
+    }
 }

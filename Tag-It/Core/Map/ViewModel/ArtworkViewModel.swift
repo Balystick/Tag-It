@@ -8,10 +8,6 @@ import Foundation
 
 class ArtworkViewModel: ObservableObject {
     @Published var artworks: [Artwork] = []
-    
-    init() {
-        fetchArtworks()
-    }
 
     func fetchArtworks() {
         guard let url = URL(string: "http://localhost:8080/artworks") else { return }
