@@ -10,7 +10,7 @@ import MapKit
 
 struct MapView: View {
     @EnvironmentObject var artworkViewModel: ArtworkViewModel
-    @ObservedObject var favoriteViewModel: FavoriteViewModel
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 48.8566, longitude: 2.3522), // Coordonnées de Paris
         span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1) // Zoom
@@ -31,7 +31,7 @@ struct MapView: View {
         }
         .edgesIgnoringSafeArea([.top, .leading, .trailing])
         .sheet(item: $selectedArtwork) { artwork in
-            DetailsArtworkView(artwork: artwork, favoriteViewModel: favoriteViewModel)
+            DetailsArtworkView(artwork: artwork)
         }
     }
 }

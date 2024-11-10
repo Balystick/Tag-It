@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FavoriteView: View {
     @EnvironmentObject var artworkViewModel: ArtworkViewModel
-    @ObservedObject var favoriteViewModel: FavoriteViewModel
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
 
     let columns = [
         GridItem(.adaptive(minimum: 100))
@@ -38,7 +38,7 @@ struct FavoriteView: View {
                         ForEach(artworkViewModel.artworks.filter { artwork in
                             favoriteViewModel.favorites.contains { $0.id_artwork == artwork.id }
                         }) { artwork in
-                            ArtworkItemView(artwork: artwork, imageSize: imageSize, favoriteViewModel: favoriteViewModel)
+                            ArtworkItemView(artwork: artwork, imageSize: imageSize)
                         }
                     }
                     .padding(.horizontal, padding)

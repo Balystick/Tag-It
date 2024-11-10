@@ -9,7 +9,7 @@ import SwiftUI
 struct ArtworkItemView: View {
     let artwork: Artwork
     let imageSize: CGFloat
-    @ObservedObject var favoriteViewModel: FavoriteViewModel
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @State private var showDetail: Bool = false
     @State private var loadedImage: UIImage?
 
@@ -39,7 +39,7 @@ struct ArtworkItemView: View {
                     .frame(width: imageSize, height: imageSize)
             }
             .sheet(isPresented: $showDetail) {
-                DetailsArtworkView(artwork: artwork, favoriteViewModel: favoriteViewModel)
+                DetailsArtworkView(artwork: artwork)
             }
 
             // Bouton pour ajouter ou retirer des favoris
@@ -63,6 +63,7 @@ struct ArtworkItemView: View {
         .frame(width: imageSize, height: imageSize)
     }
 
+    // remplace AsyncImage en échec de synchro avec @EnvironmentObject
     private func loadImage() {
         guard let url = URL(string: "http://localhost:8080/thumbs/thumb_\(artwork.image)") else {
             print("URL invalide pour l'image")

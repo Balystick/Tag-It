@@ -11,7 +11,7 @@ import MapKit
 struct DetailsArtworkView: View {
     @Environment(\.dismiss) var dismiss
     let artwork: Artwork
-    @ObservedObject var favoriteViewModel: FavoriteViewModel
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @State private var position = MapCameraPosition.automatic
     @State private var isPresenting = false
     
