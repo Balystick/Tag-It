@@ -26,13 +26,17 @@ struct FavoriteView: View {
             
             ScrollView {
                 if favoriteViewModel.favorites.isEmpty {
-                    HStack {
+                    VStack {
                         Spacer()
+                        Image("cat.cry")
+                            .resizable()
+                                .aspectRatio(contentMode: .fit) // Maintient le rapport d'aspect
+                                .frame(width: 150, height: 150)
                         Text("Vous n'avez pas encore de favoris...")
                             .foregroundColor(.gray)
-                            .padding()
                         Spacer()
                     }
+                    .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: spacing), count: numberOfColumns), spacing: spacing) {
                         ForEach(artworkViewModel.artworks.filter { artwork in
