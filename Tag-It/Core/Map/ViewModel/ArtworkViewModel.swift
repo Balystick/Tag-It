@@ -8,7 +8,9 @@ import Foundation
 
 class ArtworkViewModel: ObservableObject {
     @Published var artworks: [Artwork] = []
-
+    
+    /// Cette méthode envoie une requête `GET` à l'API pour récupérer les artworks. Si le token JWT est expiré, elle réinitialise l'état d'authentification dans `ContentViewModel`.
+    /// - Parameter contentViewModel: Le ViewModel de contenu, utilisé pour gérer l'authentification de l'utilisateur en cas d'expiration du token.
     func fetchArtworks(contentViewModel: ContentViewModel) {
         guard let url = URL(string: "http://localhost:8080/artworks") else { return }
 

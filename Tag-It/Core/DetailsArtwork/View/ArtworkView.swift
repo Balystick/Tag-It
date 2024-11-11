@@ -15,8 +15,6 @@ struct ArtworkView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            // --- AB Testing ---
-            // ScrollView([.vertical, .horizontal], showsIndicators: false) {
             ScrollView {
                 HStack {
                     Spacer()
@@ -58,7 +56,3 @@ struct ArtworkView: View {
         .navigationTitle(artwork.title)
     }
 }
-
-//#Preview {
-//    ArtworkView(artwork: Artwork.init(title: "Window to the Soul", image: "5ba7cf2b2914c129241345.jpg", type: "", address: "", city: "", country: "", date: "", latitude: 0.0, longitude: 0.0, points: ""))
-//}

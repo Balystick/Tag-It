@@ -13,7 +13,9 @@ class UserRegisterViewModel: ObservableObject {
     @Published var errorMessage: ErrorMessage?
     
     private let baseURL = "http://127.0.0.1:8080/users/create"
-
+    
+    /// Cette méthode valide les champs `username`, `email` et `password`, puis envoie une requête POST à l'API pour créer un compte utilisateur. En cas de succès, le token d'authentification est sauvegardé dans le Keychain et l'utilisateur est enregistré dans `ContentViewModel`.
+    /// - Parameter contentViewModel: Le ViewModel de contenu de l'application qui stocke l'état d'authentification global et les informations de l'utilisateur.
     func registration(contentViewModel: ContentViewModel) async {
         var errors = [String]()
 
@@ -90,12 +92,17 @@ class UserRegisterViewModel: ObservableObject {
         }
     }
     
+    /// Cette méthode utilise une expression régulière pour vérifier si l'adresse email est au bon format.
+    /// - Parameter email: L'adresse email à valider.
+    /// - Returns: `true` si l'email est valide, `false` sinon.
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         return emailPredicate.evaluate(with: email)
     }
     
+    /// Cette fonction met à jour `errorMessage` avec un message donné, déclenchant ainsi une alerte dans l'interface.
+    /// - Parameter message: Le message d'erreur à afficher.
     private func setError(_ message: String) {
         DispatchQueue.main.async {
             self.errorMessage = ErrorMessage(message: message)

@@ -13,6 +13,8 @@ class FavoriteViewModel: ObservableObject {
     
     private let baseURL = "http://localhost:8080/favorites"
     
+    /// Cette méthode envoie une requête `GET` à l'API pour récupérer les favoris de l'utilisateur. Si le token JWT est expiré, il réinitialise l'état d'authentification de `ContentViewModel`.
+    /// - Parameter contentViewModel: Le ViewModel de contenu, utilisé pour gérer l'authentification de l'utilisateur en cas d'expiration du token.
     func fetchFavorites(contentViewModel: ContentViewModel) {
         guard let url = URL(string: baseURL) else {
             print("URL invalide")
@@ -58,6 +60,10 @@ class FavoriteViewModel: ObservableObject {
         }.resume()
     }
     
+    /// Cette méthode envoie une requête `POST` pour ajouter un nouvel artwork aux favoris de l'utilisateur. Si le token JWT est expiré, elle réinitialise l'état d'authentification de `ContentViewModel`.
+    /// - Parameters:
+    ///   - idArtwork: L'identifiant de l'artwork à ajouter aux favoris.
+    ///   - contentViewModel: Le ViewModel de contenu, utilisé pour gérer l'authentification de l'utilisateur en cas d'expiration du token.
     func addFavorite(idArtwork: UUID, contentViewModel: ContentViewModel) {
         let favorite = Favorite(
             id: nil, // ID généré par le serveur
@@ -118,6 +124,10 @@ class FavoriteViewModel: ObservableObject {
         }.resume()
     }
     
+    /// Cette méthode envoie une requête `DELETE` pour retirer un favori de l'utilisateur. Si le token JWT est expiré, elle réinitialise l'état d'authentification de `ContentViewModel`.
+    /// - Parameters:
+    ///   - favoriteId: L'identifiant du favori à supprimer.
+    ///   - contentViewModel: Le ViewModel de contenu, utilisé pour gérer l'authentification de l'utilisateur en cas d'expiration du token.
     func deleteFavorite(favoriteId: UUID, contentViewModel: ContentViewModel) {
         guard let url = URL(string: "\(baseURL)/\(favoriteId)") else {
             print("URL invalide")
@@ -156,6 +166,9 @@ class FavoriteViewModel: ObservableObject {
         }.resume()
     }
     
+    /// Vérifie si un artwork est déjà dans les favoris de l'utilisateur.
+    /// - Parameter artworkId: L'identifiant de l'artwork à vérifier.
+    /// - Returns: Un booléen indiquant si l'artwork est dans les favoris (`true`) ou non (`false`).
     func isFavorited(artworkId: UUID) -> Bool {
         return favorites.contains { $0.id_artwork == artworkId }
     }

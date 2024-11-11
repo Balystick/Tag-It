@@ -137,7 +137,4 @@ struct RowDetailsArtworkView: View {
     }
 }
 
-//#Preview {
-//    DetailsArtworkView(artwork: Artwork(title: "Back to the Future", image: "5ba7cf2b2914c129241345.jpg", type: "Grafiti", address: "14 Road", city: "London", country: "England", date: "2022-05-12", latitude: 0.0, longitude: 0.0, points: ""))
-//}
 
