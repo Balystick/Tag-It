@@ -35,14 +35,14 @@ struct HomeView: View {
         }
         .onAppear {
             if contentViewModel.isAuthenticated {
-                artworkViewModel.fetchArtworks()
-                favoriteViewModel.fetchFavorites()
+                artworkViewModel.fetchArtworks(contentViewModel: contentViewModel)
+                favoriteViewModel.fetchFavorites(contentViewModel: contentViewModel)
             }
         }
         .onChange(of: contentViewModel.isAuthenticated) { oldValue, newValue in
             if newValue {
-                artworkViewModel.fetchArtworks()
-                favoriteViewModel.fetchFavorites()
+                artworkViewModel.fetchArtworks(contentViewModel: contentViewModel)
+                favoriteViewModel.fetchFavorites(contentViewModel: contentViewModel)
             }
         }
     }

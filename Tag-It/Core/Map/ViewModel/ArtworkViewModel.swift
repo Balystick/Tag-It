@@ -9,7 +9,7 @@ import Foundation
 class ArtworkViewModel: ObservableObject {
     @Published var artworks: [Artwork] = []
 
-    func fetchArtworks() {
+    func fetchArtworks(contentViewModel: ContentViewModel) {
         guard let url = URL(string: "http://localhost:8080/artworks") else { return }
 
         guard let token = KeychainManager.getTokenFromKeychain() else {
@@ -22,6 +22,18 @@ class ArtworkViewModel: ObservableObject {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    DispatchQueue.main.async {
+                        KeychainManager.deleteTokenFromKeychain()
+                        contentViewModel.isAuthenticated = false
+                        contentViewModel.currentUser = nil
+                    }
+                    return
+                }
+            }
+            
             if let data = data {
                 do {
                     let decodedElements = try JSONDecoder().decode([Artwork].self, from: data)

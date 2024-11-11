@@ -11,6 +11,7 @@ import MapKit
 struct DetailsArtworkView: View {
     @Environment(\.dismiss) var dismiss
     let artwork: Artwork
+    @EnvironmentObject var contentViewModel: ContentViewModel
     @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @State private var position = MapCameraPosition.automatic
     @State private var isPresenting = false
@@ -91,10 +92,10 @@ struct DetailsArtworkView: View {
             Button(action: {
                 if favoriteViewModel.isFavorited(artworkId: artwork.id) {
                     if let favorite = favoriteViewModel.favorites.first(where: { $0.id_artwork == artwork.id }) {
-                        favoriteViewModel.deleteFavorite(favoriteId: favorite.id!)
+                        favoriteViewModel.deleteFavorite(favoriteId: favorite.id!, contentViewModel: contentViewModel)
                     }
                 } else {
-                    favoriteViewModel.addFavorite(idArtwork: artwork.id)
+                    favoriteViewModel.addFavorite(idArtwork: artwork.id, contentViewModel: contentViewModel)
                 }
             }) {
                 Text(favoriteViewModel.isFavorited(artworkId: artwork.id) ? "Remove Favorite" : "Add Favorite")

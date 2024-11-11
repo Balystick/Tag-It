@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
 
 class FavoriteViewModel: ObservableObject {
     @Published var favorites: [Favorite] = []
     
     private let baseURL = "http://localhost:8080/favorites"
     
-    func fetchFavorites() {
+    func fetchFavorites(contentViewModel: ContentViewModel) {
         guard let url = URL(string: baseURL) else {
             print("URL invalide")
             return
@@ -30,6 +31,18 @@ class FavoriteViewModel: ObservableObject {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    DispatchQueue.main.async {
+                        KeychainManager.deleteTokenFromKeychain()
+                        contentViewModel.isAuthenticated = false
+                        contentViewModel.currentUser = nil
+                    }
+                    return
+                }
+            }
+            
             if let data = data {
                 do {
                     let decodedFavorites = try JSONDecoder().decode([Favorite].self, from: data)
@@ -45,7 +58,7 @@ class FavoriteViewModel: ObservableObject {
         }.resume()
     }
     
-    func addFavorite(idArtwork: UUID) {
+    func addFavorite(idArtwork: UUID, contentViewModel: ContentViewModel) {
         let favorite = Favorite(
             id: nil, // ID généré par le serveur
             date_added: String(ISO8601DateFormatter().string(from: Date()).prefix(10)),
@@ -81,6 +94,17 @@ class FavoriteViewModel: ObservableObject {
                 return
             }
             
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    DispatchQueue.main.async {
+                        KeychainManager.deleteTokenFromKeychain()
+                        contentViewModel.isAuthenticated = false
+                        contentViewModel.currentUser = nil
+                    }
+                    return
+                }
+            }
+            
             if let data = data {
                 do {
                     let createdFavorite = try JSONDecoder().decode(Favorite.self, from: data)
@@ -94,7 +118,7 @@ class FavoriteViewModel: ObservableObject {
         }.resume()
     }
     
-    func deleteFavorite(favoriteId: UUID) {
+    func deleteFavorite(favoriteId: UUID, contentViewModel: ContentViewModel) {
         guard let url = URL(string: "\(baseURL)/\(favoriteId)") else {
             print("URL invalide")
             return
@@ -114,6 +138,18 @@ class FavoriteViewModel: ObservableObject {
                 print("Erreur lors de la suppression du favori: \(error)")
                 return
             }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    DispatchQueue.main.async {
+                        KeychainManager.deleteTokenFromKeychain()
+                        contentViewModel.isAuthenticated = false
+                        contentViewModel.currentUser = nil
+                    }
+                    return
+                }
+            }
+            
             DispatchQueue.main.async {
                 self.favorites.removeAll { $0.id == favoriteId }
             }

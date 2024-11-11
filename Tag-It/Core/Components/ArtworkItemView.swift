@@ -9,6 +9,7 @@ import SwiftUI
 struct ArtworkItemView: View {
     let artwork: Artwork
     let imageSize: CGFloat
+    @EnvironmentObject var contentViewModel: ContentViewModel
     @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @State private var showDetail: Bool = false
     @State private var loadedImage: UIImage?
@@ -46,10 +47,10 @@ struct ArtworkItemView: View {
             Button(action: {
                 if favoriteViewModel.isFavorited(artworkId: artwork.id) {
                     if let favorite = favoriteViewModel.favorites.first(where: { $0.id_artwork == artwork.id }) {
-                        favoriteViewModel.deleteFavorite(favoriteId: favorite.id!)
+                        favoriteViewModel.deleteFavorite(favoriteId: favorite.id!, contentViewModel: contentViewModel)
                     }
                 } else {
-                    favoriteViewModel.addFavorite(idArtwork: artwork.id)
+                    favoriteViewModel.addFavorite(idArtwork: artwork.id, contentViewModel: contentViewModel)
                 }
             }) {
                 Image(systemName: favoriteViewModel.isFavorited(artworkId: artwork.id) ? "heart.fill" : "heart")
