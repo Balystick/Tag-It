@@ -39,12 +39,6 @@ struct HomeView: View {
                 favoriteViewModel.fetchFavorites(contentViewModel: contentViewModel)
             }
         }
-        .onChange(of: contentViewModel.isAuthenticated) { oldValue, newValue in
-            if newValue {
-                artworkViewModel.fetchArtworks(contentViewModel: contentViewModel)
-                favoriteViewModel.fetchFavorites(contentViewModel: contentViewModel)
-            }
-        }
     }
 }
 
